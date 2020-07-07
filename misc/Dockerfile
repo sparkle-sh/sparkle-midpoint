@@ -6,8 +6,8 @@ RUN add-apt-repository ppa:deadsnakes/ppa
 RUN DEBIAN_FRONTEND=noninteractive apt-get install -y tzdata
 RUN apt-get update
 
-WORKDIR /dashboo-syncer/
-COPY . /dashboo-syncer/
+WORKDIR /sparkle-midpoint/
+COPY . /sparkle-midpoint/
 
 RUN yes | ./bin/deps.sh
 RUN yes | ./bin/install.sh
