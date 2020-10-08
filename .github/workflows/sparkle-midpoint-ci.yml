@@ -1,0 +1,21 @@
+name: sparkle-midpoint ci pipeline
+
+on: [push]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Checkout submodules
+        uses: srt32/git-actions@v0.0.3
+        with:
+          args: git submodule update --init --recursive
+      - name: Build docker container
+        run: docker build --tag sparkle-midpoint --file ./misc/Dockerfile .
+      - name: Push docker container
+        if: github.ref == 'refs/heads/dev'
+        run: |
+          docker login --username ${{ secrets.DOCKER_AUTH_LOGIN }} --password ${{ secrets.DOCKER_AUTH_TOKEN }}
+          docker tag sparkle-midpoint ${{ secrets.DOCKER_AUTH_LOGIN }}/sparkle-midpoint 
+          docker push ${{ secrets.DOCKER_AUTH_LOGIN }}/sparkle-midpoint
