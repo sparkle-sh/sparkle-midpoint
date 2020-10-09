@@ -13,6 +13,12 @@ jobs:
           args: git submodule update --init --recursive
       - name: Build docker container
         run: docker build --tag sparkle-midpoint --file ./misc/Dockerfile .
+      - name: Install dependencies
+        run: ./bin/deps.sh
+      - name: Setup virtual environment
+        run: ./bin/venv.sh
+      - name: Run integration tests
+        run: ./bin/run_integration_tests.sh
       - name: Push docker container
         if: github.ref == 'refs/heads/dev'
         run: |
