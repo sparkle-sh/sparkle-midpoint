@@ -4,6 +4,7 @@ import uvloop
 import asyncio
 import aiomisc
 from core.log import get_logger
+from core import config
 from api.service import ApiService
 
 log = get_logger("main")
@@ -28,7 +29,15 @@ async def pre_init(entrypoint, services):
             sig, lambda: asyncio.create_task(shutdown())
         )
 
-api_service = ApiService()
+
+log.info("Loading config")
+config = config.Config("./cfg/config.json")
+log.info("Config loaded")
+
+log.info("Creating api service instance")
+api_service = ApiService(config)
+log.info("Api service instance created")
+
 
 with aiomisc.entrypoint(api_service, log_config= False) as loop:
     log.info("Starting event loop")
