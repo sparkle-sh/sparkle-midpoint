@@ -4,25 +4,23 @@ import uvloop
 import asyncio
 import aiomisc
 from core.log import get_logger
-
+from api.service import ApiService
 
 log = get_logger("main")
 
 
 @aiomisc.receiver(aiomisc.entrypoint.PRE_START)
-async def pre_init(entrypoint, services) -> None:
-    log = get_logger("main.init")
-
-    log.info("setting up signal handler")
+async def pre_init(entrypoint, services):
+    log.info("Setting up signal handler")
 
     async def shutdown() -> None:
-        log.info("received SIGINT/SIGTERM shutting down all active task")
+        log.info("Received SIGINT/SIGTERM shutting down all active task")
         tasks = [t for t in asyncio.Task.all_tasks(
         ) if t is not asyncio.Task.current_task()]
         for task in tasks:
             task.cancel()
         await asyncio.gather(*tasks, return_exceptions=True)
-        log.info("stopping event loop")
+        log.info("Stopping event loop")
         asyncio.get_event_loop().stop()
 
     for sig in [signal.SIGTERM, signal.SIGINT]:
@@ -30,5 +28,8 @@ async def pre_init(entrypoint, services) -> None:
             sig, lambda: asyncio.create_task(shutdown())
         )
 
+api_service = ApiService()
 
-print("hello world!")
+with aiomisc.entrypoint(api_service, log_config= False) as loop:
+    log.info("Starting event loop")
+    loop.run_forever()
