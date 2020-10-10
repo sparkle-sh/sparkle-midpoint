@@ -2,6 +2,7 @@ import unittest
 import os
 import json
 import ddt
+import pathlib
 from core import config, error
 
 
@@ -83,7 +84,10 @@ class ConfigTests(unittest.TestCase):
         super().setUp()
     
     def create_config_file(self, cfg):
-        with open(TEST_CONFIG, 'w+') as f:
+        filename = pathlib.Path(TEST_CONFIG)
+        filename.touch(exist_ok=True)            
+        
+        with open(filename, 'w+') as f:
             f.write(json.dumps(cfg))
 
     def test_read_config_from_invalid_path_expect_throw(self):
