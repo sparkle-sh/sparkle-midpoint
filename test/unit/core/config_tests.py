@@ -78,7 +78,7 @@ CORRUPTED_CONFIGS = [
 class ConfigTests(unittest.TestCase):
     def setUp(self):
         super().setUp()
-        subprocess.call(f"touch {TEST_CONFIG}", shell=True)
+        print(subprocess.call(f"touch {TEST_CONFIG}", shell=True))
     
     def tearDown(self):
         if os.path.isfile(TEST_CONFIG):
