@@ -86,7 +86,7 @@ class ConfigTests(unittest.TestCase):
         super().tearDown()
     
     def create_config_file(self, cfg):
-        with open(filename, 'w+') as f:
+        with open(TEST_CONFIG, 'w+') as f:
             f.write(json.dumps(cfg))
 
     def test_read_config_from_invalid_path_expect_throw(self):
