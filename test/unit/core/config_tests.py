@@ -2,8 +2,6 @@ import unittest
 import os
 import json
 import ddt
-import pathlib
-import subprocess
 from core import config, error
 
 
@@ -74,16 +72,16 @@ CORRUPTED_CONFIGS = [
 ]
 
 
+
 @ddt.ddt
 class ConfigTests(unittest.TestCase):
     def setUp(self):
         super().setUp()
-        print(subprocess.call(f"touch {TEST_CONFIG}", shell=True))
     
     def tearDown(self):
         if os.path.isfile(TEST_CONFIG):
-            subprocess.call(f"rm -f {TEST_CONFIG}", shell=True)
-        super().tearDown()
+            os.remove(TEST_CONFIG)
+        super().setUp()
     
     def create_config_file(self, cfg):
         with open(TEST_CONFIG, 'w+') as f:
