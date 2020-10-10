@@ -84,6 +84,8 @@ class ConfigTests(unittest.TestCase):
         super().setUp()
     
     def create_config_file(self, cfg):
+        print(os.getcwd())
+        print(TEST_CONFIG)
         filename = pathlib.Path(TEST_CONFIG)
         filename.touch(mode=0o777, exist_ok=True)            
 
