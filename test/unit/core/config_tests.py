@@ -3,6 +3,7 @@ import os
 import json
 import ddt
 import pathlib
+import subprocess
 from core import config, error
 
 
@@ -77,19 +78,15 @@ CORRUPTED_CONFIGS = [
 class ConfigTests(unittest.TestCase):
     def setUp(self):
         super().setUp()
+        
     
     def tearDown(self):
         if os.path.isfile(TEST_CONFIG):
-            os.remove(TEST_CONFIG)
+            subprocess.call(f"rm -f {TEST_CONFIG}", shell=True)
         super().setUp()
     
     def create_config_file(self, cfg):
-        print(os.getcwd())
-        print(TEST_CONFIG)
-        filename = pathlib.Path(TEST_CONFIG)
-        filename.touch(mode=0o777, exist_ok=True)            
-
-        with open(filename, 'w+') as f:
+        with open(TEST_CONFIG, 'w+') as f:
             f.write(json.dumps(cfg))
 
     def test_read_config_from_invalid_path_expect_throw(self):
