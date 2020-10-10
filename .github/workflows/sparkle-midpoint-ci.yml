@@ -16,7 +16,7 @@ jobs:
       - name: Setup virtual environment
         run: ./bin/venv.sh
       - name: Run unit tests
-        run: ./bin/run_unit_tests.sh
+        run: sudo ./bin/run_unit_tests.sh
       - name: Build docker container
         run: docker build --tag sparkle-midpoint --file ./misc/Dockerfile .
       - name: Run integration tests
