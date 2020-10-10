@@ -78,15 +78,15 @@ CORRUPTED_CONFIGS = [
 class ConfigTests(unittest.TestCase):
     def setUp(self):
         super().setUp()
-        
+        subprocess.call(f"touch {TEST_CONFIG}", shell=True)
     
     def tearDown(self):
         if os.path.isfile(TEST_CONFIG):
             subprocess.call(f"rm -f {TEST_CONFIG}", shell=True)
-        super().setUp()
+        super().tearDown()
     
     def create_config_file(self, cfg):
-        with open(TEST_CONFIG, 'w+') as f:
+        with open(filename, 'w+') as f:
             f.write(json.dumps(cfg))
 
     def test_read_config_from_invalid_path_expect_throw(self):
