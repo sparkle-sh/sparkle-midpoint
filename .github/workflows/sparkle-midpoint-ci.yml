@@ -16,7 +16,7 @@ jobs:
       - name: Setup virtual environment
         run: ./bin/venv.sh
       - name: Change chmod
-        run: chmod 777 ./test/unit/*
+        run: chmod 777 ./test/unit/
       - name: Run unit tests
         run: sudo ./bin/run_unit_tests.sh
       - name: Build docker container
