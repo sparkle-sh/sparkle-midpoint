@@ -85,8 +85,8 @@ class ConfigTests(unittest.TestCase):
     
     def create_config_file(self, cfg):
         filename = pathlib.Path(TEST_CONFIG)
-        filename.touch(exist_ok=True)            
-        
+        filename.touch(mode=0o777, exist_ok=True)            
+
         with open(filename, 'w+') as f:
             f.write(json.dumps(cfg))
 
