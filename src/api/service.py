@@ -11,7 +11,7 @@ log = get_logger("api.service")
 class ApiService(aiomisc.Service):
     def __init__(self, cfg):
         self.cfg = cfg
-        self.app = sanic.Sanic(name= "sparkle-api-gateway")
+        self.app = sanic.Sanic(name= "sparkle-midpoint")
     
     async def start(self):
         log.info("Starting api service")

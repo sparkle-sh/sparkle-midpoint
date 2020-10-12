@@ -3,16 +3,16 @@ import os
 import typing
 import dataclasses
 from core import error
-
-
+    
+    
 DEFAULT_HOST = '0.0.0.0'
 DEFAULT_PORT = 7776
 
     
 @dataclasses.dataclass
 class NetAddress(object):
-    host: int
-    port: str
+    host: str
+    port: int
 
 
 def parse_dataclass(payload, keywords, Model):
@@ -45,7 +45,8 @@ class Config(object):
             cfg['api'] = {}
 
         self.api = NetAddress(cfg['api'].get('host', DEFAULT_HOST), cfg['api'].get('port', DEFAULT_PORT))
-        
+      
+
     def load_services(self, cfg):
         if 'services' not in cfg:
             raise error.ConfigError("Config file is corrupted")

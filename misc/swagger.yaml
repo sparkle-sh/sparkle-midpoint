@@ -1,0 +1,44 @@
+swagger: '2.0'
+info:
+  description: API for sparkle midpoint
+  version: 0.1.0
+  title: sparkle-midpoint
+paths:
+  /:
+    get:
+      summary: Root endpoint
+      produces:
+        - application/json
+      responses:
+        200:
+          description: Returns basic application informations
+          schema:
+            $ref: '#/definitions/Info'
+definitions:
+  Info:
+    type: object
+    properties:
+      name:
+        type: string
+      version:
+          $ref: '#/definitions/Version' 
+  Version:
+    type: object
+    required:
+    - major
+    - minor
+    - build
+    properties:
+      major:
+        type: int
+      minor:
+        type: int
+      build:
+        type: int
+  Error:
+    type: object
+    properties:
+      code:
+        type: integer
+      description:
+        type: string

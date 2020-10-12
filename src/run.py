@@ -29,7 +29,6 @@ async def pre_init(entrypoint, services):
             sig, lambda: asyncio.create_task(shutdown())
         )
 
-
 log.info("Loading config")
 config = config.Config("./cfg/config.json")
 log.info("Config loaded")
