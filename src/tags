@@ -1,0 +1,6 @@
+!_TAG_FILE_SORTED	2	/0=unsorted, 1=sorted, 2=foldcase/
+api_service	/home/neko/kapik/projects/sparklev2/sparkle-midpoint/src/run.py	/^api_service = ApiService(config)$/;"	v	language:Python
+config	/home/neko/kapik/projects/sparklev2/sparkle-midpoint/src/run.py	/^config = config.Config(".\/cfg\/config.json")$/;"	v	language:Python
+log	/home/neko/kapik/projects/sparklev2/sparkle-midpoint/src/run.py	/^log = get_logger("main")$/;"	v	language:Python
+pre_init	/home/neko/kapik/projects/sparklev2/sparkle-midpoint/src/run.py	/^async def pre_init(entrypoint, services):$/;"	f	language:Python
+shutdown	/home/neko/kapik/projects/sparklev2/sparkle-midpoint/src/run.py	/^    async def shutdown() -> None:$/;"	f	language:Python	function:pre_init

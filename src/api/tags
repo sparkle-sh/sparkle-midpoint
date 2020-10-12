@@ -1,0 +1,6 @@
+!_TAG_FILE_SORTED	2	/0=unsorted, 1=sorted, 2=foldcase/
+ApiService	/home/neko/kapik/projects/sparklev2/sparkle-midpoint/src/api/service.py	/^class ApiService(aiomisc.Service):$/;"	c	language:Python
+log	/home/neko/kapik/projects/sparklev2/sparkle-midpoint/src/api/service.py	/^log = get_logger("api.service")$/;"	v	language:Python
+start	/home/neko/kapik/projects/sparklev2/sparkle-midpoint/src/api/service.py	/^    async def start(self):$/;"	m	language:Python	class:ApiService
+stop	/home/neko/kapik/projects/sparklev2/sparkle-midpoint/src/api/service.py	/^    async def stop(self, exception: Exception = None):$/;"	m	language:Python	class:ApiService
+__init__	/home/neko/kapik/projects/sparklev2/sparkle-midpoint/src/api/service.py	/^    def __init__(self, cfg):$/;"	m	language:Python	class:ApiService
