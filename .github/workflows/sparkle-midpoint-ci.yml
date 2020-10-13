@@ -21,6 +21,8 @@ jobs:
         run: docker build --tag sparkle-midpoint --file ./misc/Dockerfile .
       - name: Run integration tests
         run: ./bin/run_integration_tests.sh
+        env:
+          SPARKLE_TEST_ENV: 1
       - name: Push docker container
         if: github.ref == 'refs/heads/dev'
         run: |
