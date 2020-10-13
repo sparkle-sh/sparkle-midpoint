@@ -19,8 +19,12 @@ jobs:
         run: ./bin/run_unit_tests.sh
       - name: Build docker container
         run: docker build --tag sparkle-midpoint --file ./misc/Dockerfile .
+      - name: Create docker network
+        run: docker network create sparkle-net
       - name: Run integration tests
         run: ./bin/run_integration_tests.sh
+        env:
+          SPARKLE_TEST_ENV: 1
       - name: Push docker container
         if: github.ref == 'refs/heads/dev'
         run: |
