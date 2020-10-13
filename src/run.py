@@ -38,6 +38,6 @@ api_service = ApiService(config)
 log.info("Api service instance created")
 
 
-with aiomisc.entrypoint(api_service, log_config= False) as loop:
+with aiomisc.entrypoint(api_service, log_config=False) as loop:
     log.info("Starting event loop")
     loop.run_forever()
