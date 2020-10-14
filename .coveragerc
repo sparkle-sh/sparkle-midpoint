@@ -3,7 +3,7 @@ source =
 	./src
 	./src/api
 	./src/api/endpoint
-	./src/core/
+	./src/core
 	./src/transmission
 	./src/transmission/models
 	./src/transmission/models/v1
