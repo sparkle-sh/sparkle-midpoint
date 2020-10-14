@@ -1,0 +1,13 @@
+[run]
+source = 
+	./src
+	./src/api
+	./src/api/endpoint
+	./src/core/
+	./src/transmission
+	./src/transmission/models
+	./src/transmission/models/v1
+omit = 
+	./venv/*
+	./test/*
+
