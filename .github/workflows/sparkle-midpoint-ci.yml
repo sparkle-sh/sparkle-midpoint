@@ -20,7 +20,7 @@ jobs:
       - name: Generate test coverage report
         run: |
           ./venv/bin/coverage report -m
-          ./venv/bin/coverage html
+          ./venv/bin/coverage html 
       - name: Build docker container
         run: docker build --tag sparkle-midpoint --file ./misc/Dockerfile .
       - name: Create docker network
@@ -29,6 +29,11 @@ jobs:
         run: ./bin/run_integration_tests.sh
         env:
           SPARKLE_TEST_ENV: 1
+      - name: Archive test coverage artefacts
+        uses: actions/upload-artifact@v2
+        with:
+          name: unit-test-cov
+          path: ./htmlcov
       - name: Push docker container
         if: github.ref == 'refs/heads/dev'
         run: |
