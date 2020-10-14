@@ -3,7 +3,7 @@
 # flake8: noqa
 from __future__ import absolute_import
 # import models into model package
-from swagger_server.models.agent import Agent
-from swagger_server.models.error import Error
-from swagger_server.models.info import Info
-from swagger_server.models.version import Version
+from .agent import Agent
+from .error import Error
+from .info import Info
+from .version import Version

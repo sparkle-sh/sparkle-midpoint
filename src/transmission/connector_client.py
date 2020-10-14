@@ -7,7 +7,7 @@ from .models.v1.res.response import Response
 from core.error import ConnectorError, ErrorCode
 
 
-class ConnectorAgent(object):
+class ConnectorClient(object):
     def __init__(self, host: str, port: int):
         self.host = host
         self.port = port
