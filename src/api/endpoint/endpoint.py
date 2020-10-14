@@ -3,16 +3,26 @@ import asyncio
 import sanic
 import json
 from core.log import get_logger
+from .agent import setup_agent_endpoints
+from .device import setup_device_endpoints
 
 log = get_logger("api.endpoint.endpoint")
 
-async def setup_endpoints(app: sanic.Sanic):
+
+def setup_endpoints(app: sanic.Sanic):
     log.info("Loading endpoints")
-    await setup_root_endpoint(app)
+    setup_root_endpoint(app)
+
+    log.info("Loading agent endpoints")
+    app.blueprint(setup_agent_endpoints())
+
+    log.info("Loading device endpoints")
+    app.blueprint(setup_device_endpoints())
 
 
-async def setup_root_endpoint(app):
+def setup_root_endpoint(app):
     log.info("Loading root endpoint")
+
     @app.get("/")
     async def root_endpoint(req):
         return sanic.response.json(get_application_info())
@@ -22,8 +32,7 @@ def get_application_info():
     payload = {
         "name": "sparkle-midpoint"
     }
-    with open ('./VERSION.json','r') as f:
+    with open('./VERSION.json', 'r') as f:
         payload["version"] = json.loads(f.read())
-    
-    return payload
 
+    return payload
