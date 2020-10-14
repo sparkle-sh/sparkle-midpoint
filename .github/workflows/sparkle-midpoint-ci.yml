@@ -35,6 +35,13 @@ jobs:
         with:
           name: unit-test-cov
           path: cov
+      - name: Generate swagger documentation for API
+        run: ./bin/gen_api_docs.py < ./misc/swagger.yaml > api-docs.html
+      - name: Archive documentation
+        uses: actions/upload-artifact@v2
+        with:
+          name: api-docs
+          path: ./api-docs.html
       - name: Push docker container
         if: github.ref == 'refs/heads/dev'
         run: |
