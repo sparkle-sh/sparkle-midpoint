@@ -19,8 +19,8 @@ jobs:
         run: ./bin/run_unit_tests.sh
       - name: Generate test coverage report
         run: |
-          ./bin/venv/coverage report -m
-          ./bin/venv/coverage html
+          ./venv/bin/coverage report -m
+          ./venv/bin/coverage html
       - name: Build docker container
         run: docker build --tag sparkle-midpoint --file ./misc/Dockerfile .
       - name: Create docker network
