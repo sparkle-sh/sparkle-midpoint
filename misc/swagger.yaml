@@ -14,14 +14,31 @@ paths:
           description: Returns basic application informations
           schema:
             $ref: '#/definitions/Info'
+  /agent:
+    post:
+      summary: Creates new agent
+      produces:
+        - application/json
+      responses:
+        201:
+          description: Agent created successfully
+          schema:
+            $ref: '#/definitions/Agent'
+    delete:
+      summary: Disconnects and remove agent
 definitions:
+  Agent:
+    type: object
+    properties:
+      id:
+        type: string
   Info:
     type: object
     properties:
       name:
         type: string
       version:
-          $ref: '#/definitions/Version' 
+        $ref: '#/definitions/Version' 
   Version:
     type: object
     required:
@@ -30,11 +47,11 @@ definitions:
     - build
     properties:
       major:
-        type: int
+        type: integer
       minor:
-        type: int
+        type: integer
       build:
-        type: int
+        type: integer
   Error:
     type: object
     properties:

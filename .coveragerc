@@ -10,4 +10,5 @@ source =
 omit = 
 	./venv/*
 	./test/*
+	./src/api/endpoint/models/*
 
