@@ -2,6 +2,7 @@ import aiomisc
 import asyncio
 import sanic
 import json
+from typing import Dict
 from core.log import get_logger
 from .agent import setup_agent_endpoints
 from .device import setup_device_endpoints
@@ -9,12 +10,12 @@ from .device import setup_device_endpoints
 log = get_logger("api.endpoint.endpoint")
 
 
-def setup_endpoints(app: sanic.Sanic):
+def setup_endpoints(app: sanic.Sanic, controllers: Dict):
     log.info("Loading endpoints")
     setup_root_endpoint(app)
 
     log.info("Loading agent endpoints")
-    app.blueprint(setup_agent_endpoints())
+    app.blueprint(setup_agent_endpoints(controllers.get('agent')))
 
     log.info("Loading device endpoints")
     app.blueprint(setup_device_endpoints())
