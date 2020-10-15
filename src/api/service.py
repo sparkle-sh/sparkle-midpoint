@@ -3,8 +3,10 @@ import asyncio
 import sanic
 import typing
 from core.log import get_logger
+from core.error import SparkleError
 from api.endpoint.endpoint import setup_endpoints
-from api.controlers import agent_controller
+from api.controllers import agent_controller
+from api.endpoint.utils import handle_api_exceptions
 
 
 log = get_logger("api.service")
@@ -15,7 +17,7 @@ class ApiService(aiomisc.Service):
         self.cfg = cfg
         self.app = sanic.Sanic(name="sparkle-midpoint")
         self.controllers = {
-            'agent': agent_controller.AgentController()
+            'agent': agent_controller.AgentController(self.cfg)
         }
 
     async def start(self):

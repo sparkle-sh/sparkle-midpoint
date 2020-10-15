@@ -34,7 +34,7 @@ class ConnectorClient(object):
         try:
             if not isinstance(res, AckResponse):
                 raise ConnectorError(
-                    ErrorCode.CONNECTOR_DISCONNECT_ERROR, "error during agent disconnection")
+                    ErrorCode.CONNECTOR_ERROR, "error during agent disconnection")
         finally:
             await self.transmitter.disconnect()
 
