@@ -3,16 +3,17 @@ import enum
 
 class ErrorCode(enum.IntEnum):
     INVALID_REQUEST = 1,
-    INVALID_CONFIG = 2,
+    CORRUPTED_PAYLOAD = 2,
+    INVALID_CONFIG = 3,
     AGENT_NOT_EXIST = 100,
     INVALID_HANDSHAKE = 200,
-    CONNECTOR_CONNECTION_DOWN = 201,
-    CONNECTOR_RESPONSE_ERROR = 202,
-    CONNECTOR_DISCONNECT_ERROR = 203,
+    CONNECTOR_ERROR = 201,
+    
 
 
 class SparkleFatalError(Exception):
     def __init__(self, code: ErrorCode, description, name="SparkleFatalError"):
+        super().__init__()
         self.code = code
         self.description = description
         self.name = name
@@ -26,9 +27,9 @@ class SparkleError(SparkleFatalError):
         super().__init__(code, description, name)
 
 
-class ControllerError(SparkleError):
+class ApiError(SparkleError):
     def __init__(self, code: ErrorCode, description):
-        super().__init__(code, description, name="ControllerError")
+        super().__init__(code, description, name="ApiError")
 
 
 class ConnectorError(SparkleError):

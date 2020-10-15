@@ -2,8 +2,9 @@ import asyncio
 import struct
 import json
 import functools
+from src.core.error import ConnectorError, ErrorCode
 from .models.v1.res import Response, HEADER_TO_RESPONSE
-
+from .models.v1.req.request import Request
 
 PAYLOAD_LENGTH_BYTES = 4
 
@@ -14,8 +15,8 @@ def catch_os_error(msg):
         async def wrapper(*args, **kwargs):
             try:
                 return await func(*args, **kwargs)
-            except OSError:
-                raise RuntimeError(msg)
+            except OSError as e:
+                raise ConnectorError(ErrorCode.CONNECTOR_ERROR, msg)
         return wrapper
     return inner
 
@@ -34,6 +35,10 @@ class Transmitter(object):
         self.writer.close()
         await self.writer.wait_closed()
 
+    @catch_os_error("Could not send request, connector dropped connection")
+    async def send_request(self, req: Request) -> None:
+        await self.send_payload(req.to_bytes())
+
     @catch_os_error("Could read response, connector dropped connection")
     async def read_response(self) -> Response:
         payload = await self.read_payload()
@@ -42,7 +47,8 @@ class Transmitter(object):
         response_builder = HEADER_TO_RESPONSE.get(j.get("header"))
         if response_builder is not None:
             return response_builder(j)
-        raise RuntimeError("Unknown connector response")
+        raise ConnectorError(ErrorCode.CONNECTOR_ERROR,
+                             "Unknown connector response")
 
     async def send_payload(self, req: bytes) -> None:
         await self.send_payload_length(len(req))
