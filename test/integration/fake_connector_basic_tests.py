@@ -23,7 +23,9 @@ class FakeConnectorBasicTests(FakeConnectorTestsBase):
 
         url = "{}/agent".format(MIDPOINT_API_BASE)
         code, payload = self.wrapped_request(requests.post, url)
+       
         self.assertEqual(code, 201)
+
 
     def test_disconnect_agent_with_invalid_agent_id(self):
         url = "{}/agent".format(MIDPOINT_API_BASE)
