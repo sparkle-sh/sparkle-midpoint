@@ -8,7 +8,8 @@ class ErrorCode(enum.IntEnum):
     AGENT_NOT_EXIST = 100,
     INVALID_HANDSHAKE = 200,
     CONNECTOR_ERROR = 201,
-    
+    CONNECTOR_RESPONSE_ERROR = 202
+
 
 
 class SparkleFatalError(Exception):
