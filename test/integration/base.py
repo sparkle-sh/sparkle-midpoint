@@ -7,5 +7,5 @@ class MidpointTestBase(TestBase):
         super().setUp()
         self.url = MIDPOINT_API_BASE
         if self.is_test_env():
-            self.start_midpoint()
+            self.start_midpoint(local=True)
             self.wait_for_midpoint()

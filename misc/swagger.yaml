@@ -6,27 +6,64 @@ info:
 paths:
   /:
     get:
-      summary: Root endpoint
+      summary: Root endpoint, returns basic server information
       produces:
         - application/json
       responses:
         200:
-          description: Returns basic application informations
+          description: OK
           schema:
             $ref: '#/definitions/Info'
   /agent:
     post:
-      summary: Creates new agent
+      summary: Creates new connector agent
       produces:
         - application/json
       responses:
         201:
-          description: Agent created successfully
+          description: Agent created successfully, agent_id is returned
           schema:
             $ref: '#/definitions/Agent'
+        400:
+          description: Something went wrong, see error.description for more
+          schema:
+            $ref: '#/definitions/Error'
     delete:
-      summary: Disconnects and remove agent
+      summary: Disconnects and removes agent
+      responses:
+        200:
+          description: Agent removed and disconnected successfully
+        400:
+          description: Something went wrong, agent should be disconnected and removed anyway
+          schema:
+            $ref: '#/definitions/Error'
+  /devices:
+    get:
+      summary: Returns list of connected devices
+  /device/state:
+    get:
+      summary: Returns device state
+    put:
+      summary: Updates device state
+  /device/datasheet:
+    get:
+      summary: Returns device datasheet
+  /device/value:
+    get:
+      summary: Return value of sensor device
+
 definitions:
+  DeviceDatasheet:
+    type: object
+  DeviceState:
+    type: object
+  Devices:
+    type: object 
+  SensorValue:
+    type: object
+    properties:
+      value:
+        type: float
   Agent:
     type: object
     properties:

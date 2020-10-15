@@ -18,6 +18,6 @@ def setup_agent_endpoints(agent_controller: AgentController):
     async def agent_delete(req):
         agent = Agent.from_dict(validate_payload(['id'], req.json))
         await agent_controller.disconnect(agent)
-        return empty_response(204)
+        return empty_response(200)
             
     return bp

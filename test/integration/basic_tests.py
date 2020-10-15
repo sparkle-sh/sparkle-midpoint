@@ -18,3 +18,25 @@ class BasicTests(MidpointTestBase):
         self.assertIn('minor', version)
         self.assertIn('major', version)
         self.assertIn('build', version)
+
+    def test_connect_with_connector_down(self):
+        code, res = self.wrapped_request(requests.post, f'{self.url}/agent')
+        self.assertEqual(code, 400)
+        self.assertIn('connector is down', res['description'])
+
+    def test_disconnect_without_body(self):
+        code, res = self.wrapped_request(requests.delete, f'{self.url}/agent')
+        self.assertEqual(code, 400)
+        self.assertIn('empty', res['description'])
+
+    def test_disconnect_with_invalid_key(self):
+        payload = {'hello': 'world'}
+        code, res = self.wrapped_request(requests.delete, f'{self.url}/agent', json=payload)
+        self.assertEqual(code, 400)
+        self.assertIn('corrupted', res['description'])
+
+    def test_disconnect_with_invalid_agent_id(self):
+        payload = {'id': 'world'}
+        code, res = self.wrapped_request(requests.delete, f'{self.url}/agent', json=payload)
+        self.assertEqual(code, 400)
+        self.assertIn('not exist', res['description'])
