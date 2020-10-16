@@ -17,6 +17,7 @@ for f in `ls ./sparkle-midpoint-cov`; do
 done
 
 cd it-cov
+ls -al
 ../venv/bin/coverage report -m
 ../venv/bin/coverage html
 
