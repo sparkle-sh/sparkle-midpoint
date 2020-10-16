@@ -17,11 +17,8 @@ jobs:
         run: ./bin/venv.sh
       - name: Run unit tests
         run: ./bin/run_unit_tests.sh
-      - name: Generate test coverage report
-        run: |
-          ./venv/bin/coverage report -m
-          ./venv/bin/coverage html
-          mkdir cov && mv ./htmlcov cov 
+      - name: Generate unit test coverage report
+        run: ./bin/generate_ut_test_cov.sh
       - name: Build docker container
         run: docker build --tag sparkle-midpoint --file ./misc/Dockerfile .
       - name: Create docker network
@@ -30,9 +27,10 @@ jobs:
         run: |
           mkdir ./sparkle-midpoint-cov
           ./bin/run_integration_tests.sh
-          ls ./sparkle-midpoint-cov
         env:
           SPARKLE_TEST_ENV: 1
+      - name: Generate integration tests coverage report
+        run: ./bin/generate_it_test_cov.sh
       - name: Archive test coverage artifacts
         uses: actions/upload-artifact@v2
         with:
