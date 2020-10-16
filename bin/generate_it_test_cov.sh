@@ -18,6 +18,7 @@ done
 
 cd it-cov
 ls -al
+../venv/bin/coverage combine
 ../venv/bin/coverage report -m
 ../venv/bin/coverage html
 
