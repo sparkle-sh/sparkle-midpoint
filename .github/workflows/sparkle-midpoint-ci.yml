@@ -36,7 +36,7 @@ jobs:
         with:
           name: unit-test-cov
           path: cov
-      -name: Archive integration test coverage artifacts:
+      - name: Archive integration test coverage artifacts:
         uses: actions/upload-artifact@v2
         with:
           name: integration-test-cov
