@@ -8,7 +8,7 @@ fi
 
 RUNNER='./venv/bin/python3.7'
 
-if [ $1 == '--with-cov' ]; then
+if [[ $1 == '--with-cov' ]]; then
 	RUNNER='./venv/bin/coverage run'
 fi
 
