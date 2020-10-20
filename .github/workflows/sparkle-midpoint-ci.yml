@@ -33,7 +33,9 @@ jobs:
         env:
           SPARKLE_TEST_ENV: 1
       - name: Save integration tests logs
-        run: ./bin/save_tests_logs.sh
+        run: |
+          ls ./logs
+          ./bin/save_tests_logs.sh
       - name: Generate integration tests coverage report
         run: ./bin/generate_it_test_cov.sh
       - name: Archive unit test coverage artifacts
