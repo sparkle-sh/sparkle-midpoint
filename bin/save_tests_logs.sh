@@ -5,11 +5,11 @@ mkdir tmp
 
 for l in `ls *.tar`; do
 	tar -C ./tmp -xvf ./$l
+	mv ./tmp/sparkle-midpoint.log ./`echo $f cut -d '.tar' -f1`.log
 done
 
 rm *.tar
-cp ./tmp/* .
-rm tmp
+rm tmp -f
 
 cd ..
 ls ./logs
