@@ -36,6 +36,11 @@ jobs:
         run: |
           ls ./logs
           ./bin/save_tests_logs.sh
+      - name: Archive integration tests logs
+        uses: actions/upload-artifact@v2
+        with:
+          name: test-logs
+          path: logs
       - name: Generate integration tests coverage report
         run: ./bin/generate_it_test_cov.sh
       - name: Archive unit test coverage artifacts
