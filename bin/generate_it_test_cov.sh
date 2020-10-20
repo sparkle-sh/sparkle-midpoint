@@ -7,8 +7,6 @@ fi
 
 mkdir it-cov
 
-ls ./sparkle-midpoint-cov
-
 for f in `ls ./sparkle-midpoint-cov`; do
 	mkdir tmp
 	tar -C ./tmp -xvf ./sparkle-midpoint-cov/$f
@@ -17,7 +15,7 @@ for f in `ls ./sparkle-midpoint-cov`; do
 done
 
 cd it-cov
-ls -al
+
 ../venv/bin/coverage combine
 ../venv/bin/coverage report -m
 ../venv/bin/coverage html

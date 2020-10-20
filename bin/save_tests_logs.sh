@@ -11,7 +11,3 @@ done
 rm *.tar
 rm -rf tmp
 
-cd ..
-ls ./logs
-
-
