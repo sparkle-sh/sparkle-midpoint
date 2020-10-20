@@ -1,4 +1,8 @@
 import logging
+import os
+
+
+LOG_DIRECTORY = './logs/'
 
 
 def get_logger(name: str) -> logging.Logger:
@@ -11,5 +15,13 @@ def get_logger(name: str) -> logging.Logger:
     console = logging.StreamHandler()
     console.setFormatter(formatter)
 
+    if not os.path.isdir(LOG_DIRECTORY):
+        os.mkdir(LOG_DIRECTORY)
+
+    file_handler = logging.FileHandler(LOG_DIRECTORY + 'sparkle-midpoint.log')
+    file_handler.setFormatter(formatter)
+
+    root.addHandler(file_handler)
     root.addHandler(console)
     return root
+

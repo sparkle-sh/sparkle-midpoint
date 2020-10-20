@@ -1,7 +1,7 @@
 #!/bin/bash
 
 if [ ! -d ./sparkle-midpoint-cov ]; then
-	echo "Integartion tests coverage files not generated, skipping"
+	echo "Integration tests coverage files not generated, skipping"
 	exit 0
 fi
 

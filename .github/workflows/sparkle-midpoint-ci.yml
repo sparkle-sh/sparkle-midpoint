@@ -11,6 +11,8 @@ jobs:
         uses: srt32/git-actions@v0.0.3
         with:
           args: git submodule update --init --recursive
+      - name: Change scripts permissions
+        run: chmod +x ./bin/*
       - name: Install dependencies
         run: ./bin/deps.sh
       - name: Setup virtual environment
@@ -26,9 +28,12 @@ jobs:
       - name: Run integration tests
         run: |
           mkdir ./sparkle-midpoint-cov
+          mkdir ./logs
           ./bin/run_integration_tests.sh
         env:
           SPARKLE_TEST_ENV: 1
+      - name: Save integration tests logs
+        run: ./bin/save_tests_logs.sh
       - name: Generate integration tests coverage report
         run: ./bin/generate_it_test_cov.sh
       - name: Archive unit test coverage artifacts
