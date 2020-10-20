@@ -5,7 +5,7 @@ mkdir tmp
 
 for l in `ls *.tar`; do
 	tar -C ./tmp -xvf ./$l
-	mv ./tmp/sparkle-midpoint.log ./`echo $f | cut -d '.tar' -f1`.log
+	mv ./tmp/sparkle-midpoint.log ./`echo $f | cut -d '.' -f1-3`.log
 done
 
 rm *.tar
