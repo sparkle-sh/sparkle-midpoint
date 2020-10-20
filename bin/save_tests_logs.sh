@@ -3,7 +3,7 @@
 cd ./logs
 mkdir tmp
 
-for l in `ls ./tmp/*.tar`; do
+for l in `ls *.tar`; do
 	tar -C ./tmp -xvf ./$f
 done
 
