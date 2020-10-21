@@ -28,6 +28,7 @@ jobs:
       - name: Run integration tests
         run: |
           mkdir ./sparkle-midpoint-cov
+          rm -r logs > /dev/null 2>&1
           mkdir ./logs
           ./bin/run_integration_tests.sh
         env:
