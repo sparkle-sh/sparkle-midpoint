@@ -1,9 +1,8 @@
 import unittest
-import ddt
 from transmission.models.v1.req import *
 from transmission.models.v1.req.request import Request
 
-@ddt.ddt
+
 class RequestTests(unittest.TestCase):
     def test_when_serializing_not_implemented_method_expect_throw(self):
         req = Request()
