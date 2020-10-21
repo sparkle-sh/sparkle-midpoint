@@ -3,7 +3,7 @@ from .request import Request
 
 
 class SwitchDeviceStateRequest(Request):
-    def __init__(self, device_id, state):
+    def __init__(self, device_id: int, state: int):
         self.device_id = device_id
         self.state = state
 
