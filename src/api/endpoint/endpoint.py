@@ -44,7 +44,7 @@ def get_application_info():
     payload = {
         "name": "sparkle-midpoint"
     }
-    with open('./VERSION.json', 'r') as f:
+    with open('./version.json', 'r') as f:
         payload["version"] = json.loads(f.read())
 
     return payload
