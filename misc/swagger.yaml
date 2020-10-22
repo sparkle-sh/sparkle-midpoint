@@ -18,7 +18,7 @@ paths:
     post:
       summary: Creates new connector agent
       produces:
-        - application/json
+        - application/json  
       responses:
         201:
           description: Agent created successfully, agent_id is returned
@@ -29,7 +29,14 @@ paths:
           schema:
             $ref: '#/definitions/Error'
     delete:
-      summary: Disconnects and removes agent
+      summary: Disconnects and removes agenti
+      requestBody:
+        description: Agent to disconnect
+        required: true
+        content:
+          application/json:
+            schema:
+              '#/definitions/Agent'
       responses:
         200:
           description: Agent removed and disconnected successfully
@@ -40,25 +47,86 @@ paths:
   /devices:
     get:
       summary: Returns list of connected devices
+      produces:
+        - application/json
+      requestBody:
+        description: Agent which should be used to send connector request
+        required: true
+        content:
+          application/json:
+            schema:
+              '#/definitions/Agent'
+      responses:
+        200:
+          description: Devices fetched successfully
+          schema:
+            $ref: '#/definitions/Devices'
+        400:
+          description: Something went wrong
+          schema:
+            $ref: '#/definitions/Error'
   /device/state:
     get:
       summary: Returns device state
+      produces:
+        - application/json
+      requestBody:
+        description: Device which state should be returned
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/definitions/DeviceRequest'
+      responses:
+        200:
+          description: Device state fetched successfully
+          schema:
+            $ref: '#/definitions/DeviceStateResponse'
+        400:
+          description: Something went wrong
+          schema:
+            $ref: '#/definitions/Error'
     put:
-      summary: Updates device state
+      summary: Switches device state
   /device/datasheet:
-    get:
+    get: 
       summary: Returns device datasheet
   /device/value:
     get:
       summary: Return value of sensor device
-
 definitions:
+  DeviceId:
+    type: object
+    properties:
+      id:
+        type: integer
+      agent:
+        $ref: '#/definitions/Agent'
   DeviceDatasheet:
     type: object
-  DeviceState:
+  DeviceStateResponse:
     type: object
+    properties:
+      state:
+        type: integer
   Devices:
-    type: object 
+    type: object
+    properties:
+      devices:
+        type: array
+        items:
+          $ref: '#/definitions/Device'
+  Device:
+    type: object
+    properties:
+      id:
+        type: integer
+      type:
+        type: integer
+      name:
+        type: string
+      description:
+        type: string 
   SensorValue:
     type: object
     properties:
