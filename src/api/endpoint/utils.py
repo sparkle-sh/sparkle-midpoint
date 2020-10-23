@@ -8,9 +8,11 @@ log = get_logger("api.endpoint.util")
 
 def validate_payload(keywords, payload):
     if payload is None:
+        log.warning("Received empty request")
         raise ApiError(ErrorCode.CORRUPTED_PAYLOAD, "Received empty request")
     for keyword in keywords:
         if keyword not in payload:
+            log.warning(f"Received payload is corrupted, key {keyword} missing")
             raise ApiError(ErrorCode.CORRUPTED_PAYLOAD,
                            f'Received payload is corrupted, key {keyword} missing')
     return payload
@@ -35,5 +37,6 @@ def empty_response(status):
 
 
 def error_response(error_code, description=None, status_code=400):
+    log.warning(f"Sending error response: {description}")
     model = Error(error_code, description)
     return response(model, status=status_code)

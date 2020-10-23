@@ -37,6 +37,7 @@ log.info("Creating api service instance")
 api_service = ApiService(config)
 log.info("Api service instance created")
 
+log.info("Installing uvloop")
 uvloop.install()
 
 with aiomisc.entrypoint(api_service, log_config=False) as loop:
