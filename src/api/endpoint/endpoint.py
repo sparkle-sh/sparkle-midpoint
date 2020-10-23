@@ -15,11 +15,14 @@ def setup_endpoints(app: sanic.Sanic, controllers: Dict):
     log.info("Loading endpoints")
     setup_root_endpoint(app)
 
+    agent_controller = controllers.get("agent")
+    device_controller = controllers.get("device")
+
     log.info("Loading agent endpoints")
-    app.blueprint(setup_agent_endpoints(controllers.get('agent')))
+    app.blueprint(setup_agent_endpoints(agent_controller))
 
     log.info("Loading device endpoints")
-    app.blueprint(setup_device_endpoints())
+    app.blueprint(setup_device_endpoints(agent_controller, device_controller))
 
     @app.exception(sanic.exceptions.NotFound)
     async def handle_404(request, exception):

@@ -7,3 +7,5 @@ from .agent import Agent
 from .error import Error
 from .info import Info
 from .version import Version
+from .devices import Devices
+from .device import Device

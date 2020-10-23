@@ -42,7 +42,7 @@ paths:
           description: Something went wrong, agent should be disconnected and removed anyway
           schema:
             $ref: '#/definitions/Error'
-  /devices:
+  /device:
     get:
       summary: Returns list of connected devices
       produces:
