@@ -2,9 +2,11 @@ import json
 import os
 import typing
 import dataclasses
-from core import error
-    
-    
+from . import error
+from .log import get_logger    
+
+log = get_logger("core.config")
+
 DEFAULT_HOST = '0.0.0.0'
 DEFAULT_PORT = 7776
 
@@ -18,6 +20,7 @@ class NetAddress(object):
 def parse_dataclass(payload, keywords, Model):
     for keyword in keywords:
         if keyword not in payload:
+            log.warning(f"Config file is corrupted, cannot find {keyword}")
             raise error.ConfigError("Config file is corrupted")
     args = (payload.get(keyword) for keyword in keywords)
     return Model(*args)
@@ -31,6 +34,7 @@ def parse_net_address(address) -> NetAddress:
 class Config(object):
     def __init__(self, path: str):
         if not os.path.isfile(path):
+            log.warning(f"Could not find configuration file: {path}")
             raise error.ConfigError(f"Could not find configuration file: {path}")
         
         cfg = {}
@@ -49,12 +53,14 @@ class Config(object):
 
     def load_services(self, cfg):
         if 'services' not in cfg:
-            raise error.ConfigError("Config file is corrupted")
+            log.warning("Could not find services in config file")
+            raise error.ConfigError("Could not find services in config file")
 
         services = cfg.get("services")
 
         if 'connector' not in services:
-            raise error.ConfigError("Config file is corrupted")
+            log.warning("Could not find connector service in config file")
+            raise error.ConfigError("Could not find connector service in config file")
         
         self.connector = parse_net_address(services.get('connector'))
 

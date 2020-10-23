@@ -5,6 +5,9 @@ import functools
 from src.core.error import ConnectorError, ErrorCode
 from .models.v1.res import Response, HEADER_TO_RESPONSE
 from .models.v1.req.request import Request
+from core.log import get_logger
+
+log = get_logger("transmission.transmitter")
 
 PAYLOAD_LENGTH_BYTES = 4
 
@@ -16,6 +19,7 @@ def catch_os_error(msg):
             try:
                 return await func(*args, **kwargs)
             except OSError as e:
+                log.warning(f"Connector error has occured: {msg}")
                 raise ConnectorError(ErrorCode.CONNECTOR_ERROR, msg)
         return wrapper
     return inner

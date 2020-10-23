@@ -28,3 +28,10 @@ class ApiService(aiomisc.Service):
 
     async def stop(self, exception: Exception = None):
         log.info("Stopping api service")
+        agent_controller = self.controllers.get("agent")
+        if agent_controller is None:
+            log.fatal("Agent controller is none, this is unexpected")
+            raise RuntimeError
+        
+        await agent_controller.close_all_connections()
+        log.info("Api service has been stopped")
