@@ -18,7 +18,7 @@ paths:
     post:
       summary: Creates new connector agent
       produces:
-        - application/json
+        - application/json  
       responses:
         201:
           description: Agent created successfully, agent_id is returned
@@ -29,7 +29,12 @@ paths:
           schema:
             $ref: '#/definitions/Error'
     delete:
-      summary: Disconnects and removes agent
+      summary: Disconnects and removes agenti
+      parameters:
+        - in: body
+          name: agent
+          schema:
+            $ref: '#/definitions/Agent'
       responses:
         200:
           description: Agent removed and disconnected successfully
@@ -40,25 +45,152 @@ paths:
   /devices:
     get:
       summary: Returns list of connected devices
+      produces:
+        - application/json
+      parameters:
+        - in: body
+          name: agent
+          schema:
+            $ref: '#/definitions/Agent'
+      responses:
+        200:
+          description: Devices fetched successfully
+          schema:
+            $ref: '#/definitions/Devices'
+        400:
+          description: Something went wrong
+          schema:
+            $ref: '#/definitions/Error'
   /device/state:
     get:
       summary: Returns device state
+      produces:
+        - application/json
+      parameters:
+        - in: body
+          name: Device query info
+          schema:
+            $ref: '#/definitions/DeviceQuery'
+      responses:
+        200:
+          description: Device state fetched successfully
+          schema:
+            $ref: '#/definitions/DeviceState'
+        400:
+          description: Something went wrong
+          schema:
+            $ref: '#/definitions/Error'
     put:
-      summary: Updates device state
+      summary: Switches device state
+      parameters:
+        - in: body
+          name: Switch device query info
+          schema:
+            $ref: '#/definitions/SwitchDeviceStateQuery'
+      responses:
+        200: 
+          description: Device state changed successfully
+        400:
+          description: Something went wrong
+          schema:
+            $ref: '#/definitions/Error'
   /device/datasheet:
-    get:
+    get: 
       summary: Returns device datasheet
+      produces:
+        - application/json
+      parameters:
+        - in: body
+          name: Device query info
+          schema:
+            $ref: '#/definitions/DeviceQuery'
+      responses:
+        200:
+          description: Device datasheet fetched successfully
+          schema:
+            oneOf:
+              - $ref: '#/definitions/SensorDeviceDatasheet'
+              - $ref: '#/definitions/SwitchableDeviceDatasheet'
+        400:
+          description: Something went wrong
+          schema:
+            $ref: '#/definitions/Error'
   /device/value:
     get:
       summary: Return value of sensor device
-
 definitions:
-  DeviceDatasheet:
+  DeviceValueQuery:
     type: object
+    properties:
+      device_id:
+        type: integer
+      agent:
+        $ref: '#/definitions/Agent'
+      labels:
+        type: array
+        items:
+          type: string
+  DeviceValue:
+    type: object
+  SwitchDeviceStateQuery:
+    type: object
+    properties:
+      device_id:
+        type: integer
+      agent:
+        $ref: '#/definitions/Agent'
+      state:
+        $ref: '#/definitions/DeviceState'
+  DeviceQuery:
+    type: object
+    properties:
+      device_id:
+        type: integer
+      agent:
+        $ref: '#/definitions/Agent'
+  SwitchableDeviceDatasheet:
+    type: object
+    properties:
+      datasheet:
+        type: object
+        properties:
+          values:
+            type: array
+            items:
+              type: integer
+  SensorDeviceDatasheet:
+    type: object
+    properties:
+      datasheet:
+        type: object
+        properties:
+          labels:
+            type: array
+            items:
+              type: string
   DeviceState:
     type: object
+    properties:
+      state_value:
+        type: integer
   Devices:
-    type: object 
+    type: object
+    properties:
+      devices:
+        type: array
+        items:
+          $ref: '#/definitions/Device'
+  Device:
+    type: object
+    properties:
+      id:
+        type: integer
+      type:
+        type: integer
+      name:
+        type: string
+      description:
+        type: string 
   SensorValue:
     type: object
     properties:

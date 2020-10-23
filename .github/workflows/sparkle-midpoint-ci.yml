@@ -36,6 +36,7 @@ jobs:
       - name: Save integration tests logs
         run: |
           ./bin/save_tests_logs.sh > /dev/null
+        if: always()
       - name: Archive integration tests logs
         uses: actions/upload-artifact@v2
         with:
