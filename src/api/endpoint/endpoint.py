@@ -26,11 +26,19 @@ def setup_endpoints(app: sanic.Sanic, controllers: Dict):
 
     @app.exception(sanic.exceptions.NotFound)
     async def handle_404(request, exception):
+        log.warning(f"Route {request.url} not found")
         return error_response(
             400, f"Route {request.url} not found", status_code=404)
 
+    @app.exception(sanic.exceptions.InvalidUsage)
+    async def handle_invalid_usage(request, exception):
+        log.warning(f"Invalid body format")
+        return error_response(
+            400, f"Invalid body format", status_code=400)
+
     @app.exception(sanic.exceptions.MethodNotSupported)
     async def handle_405(request, exception):
+        log.warning(f"Method {request.method} not allowed for url {request.url}")
         return error_response(
             400, f"Method {request.method} not allowed for url {request.url}", status_code=405)
 
