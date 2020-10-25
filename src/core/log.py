@@ -21,6 +21,7 @@ def get_logger(name: str) -> logging.Logger:
     file_handler = logging.FileHandler(LOG_DIRECTORY + 'sparkle-midpoint.log')
     file_handler.setFormatter(formatter)
 
+    root.propagate = False
     root.addHandler(file_handler)
     root.addHandler(console)
     return root

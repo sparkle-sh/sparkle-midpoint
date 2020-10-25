@@ -2,7 +2,7 @@ from typing import Dict
 from core.log import get_logger
 import json
 
-log = get_logger("connector.transmission.models.req.request")
+log = get_logger("transmission.models.v1.req.request")
 
 
 class Request(object):
