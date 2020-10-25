@@ -9,3 +9,4 @@ from .info import Info
 from .version import Version
 from .devices import Devices
 from .device import Device
+from .device_state import DeviceState

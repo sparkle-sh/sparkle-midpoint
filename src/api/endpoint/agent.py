@@ -1,5 +1,5 @@
 import sanic
-from ..controllers.agent_controller import AgentController
+from src.api.controllers.agent_controller import AgentController
 from .utils import *
 from .models import Agent
 
