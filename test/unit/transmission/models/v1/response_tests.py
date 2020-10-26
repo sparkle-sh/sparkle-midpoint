@@ -3,6 +3,7 @@ import ddt
 from transmission.models.v1.res import *
 from transmission.models.v1.res.response import Response
 from transmission.models.v1.res.responses import *
+from transmission.models.v1.device_type import DeviceType
 from core.error import *
 
 
@@ -56,11 +57,33 @@ class GetDeviceDatasheetResponseTests(unittest.TestCase):
         p = {
             "header": "get_device_datasheet_response",
             "content": {
-                "datasheet": ds
+                "datasheet": {"labels": ds}
             }
         }
         res = GetDeviceDatasheetResponse(p)
-        self.assertEqual(res.get_datasheet(), ds)
+        self.assertEqual(res.get_datasheet()['labels'], ds)
+
+    def test_when_creating_with_values_expect_switchable(self):
+        ds = ['ab', 'cd']
+        p = {
+            "header": "get_device_datasheet_response",
+            "content": {
+                "datasheet": {"values": ds}
+            }
+        }
+        res = GetDeviceDatasheetResponse(p)
+        self.assertEqual(res.get_device_type(), DeviceType.SWITCHABLE)
+
+    def test_when_creating_with_labels_expect_sensor(self):
+        ds = ['ab', 'cd']
+        p = {
+            "header": "get_device_datasheet_response",
+            "content": {
+                "datasheet": {"labels": ds}
+            }
+        }
+        res = GetDeviceDatasheetResponse(p)
+        self.assertEqual(res.get_device_type(), DeviceType.SENSOR)
 
 
 class GetDeviceStateResponseTests(unittest.TestCase):

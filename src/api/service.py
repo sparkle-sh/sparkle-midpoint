@@ -25,7 +25,8 @@ class ApiService(aiomisc.Service):
         log.info("Starting api service")
         setup_endpoints(self.app, self.controllers)
         await asyncio.create_task(
-            self.app.create_server(host=self.cfg.api.host, port=self.cfg.api.port, return_asyncio_server=True))
+            self.app.create_server(host=self.cfg.api.host, port=self.cfg.api.port,
+                                   return_asyncio_server=True))
 
     async def stop(self, exception: Exception = None):
         log.info("Stopping api service")
@@ -33,6 +34,6 @@ class ApiService(aiomisc.Service):
         if agent_controller is None:
             log.fatal("Agent controller is none, this is unexpected")
             raise RuntimeError
-        
+
         await agent_controller.close_all_connections()
         log.info("Api service has been stopped")
