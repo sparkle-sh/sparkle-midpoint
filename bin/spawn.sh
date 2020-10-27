@@ -13,6 +13,6 @@ if [[ $1 == '--with-cov' ]]; then
 fi
 
 source ./venv/bin/activate
-PYTHONPATH=. $RUNNER ./src/run.py
+PYTHONPATH=. ./venv/bin/coverage run ./src/run.py
 deactivate
 
