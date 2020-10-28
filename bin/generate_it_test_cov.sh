@@ -18,6 +18,6 @@ cd it-cov
 ln -s src ../src
 
 ../venv/bin/coverage combine
-../venv/bin/coverage report -m
-../venv/bin/coverage html
+../venv/bin/coverage report -m -i
+../venv/bin/coverage html -i
 
