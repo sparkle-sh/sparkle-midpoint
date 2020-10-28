@@ -6,6 +6,7 @@ if [ ! -d ./sparkle-midpoint-cov ]; then
 fi
 
 mkdir it-cov
+ln -s ./src ./it-cov/src
 
 for f in `ls ./sparkle-midpoint-cov`; do
 	mkdir tmp
@@ -14,11 +15,8 @@ for f in `ls ./sparkle-midpoint-cov`; do
 	rm tmp -rf
 done
 
-cd it-cov
-../venv/bin/coverage combine
-cd ..
 
-cat it-cov/.coverage
+./venv/bin/coverage combine --append
 mv it-cov/.coverage .
 
 ./venv/bin/coverage report -m
