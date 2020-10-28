@@ -5,8 +5,10 @@ from datetime import date, datetime  # noqa: F401
 
 from typing import List, Dict  # noqa: F401
 
-from swagger_server.models.base_model_ import Model
-from swagger_server import util
+from .agent import Agent
+from .device_state import DeviceState
+from .base_model_ import Model
+from . import util
 
 
 class SwitchDeviceStateQuery(Model):
