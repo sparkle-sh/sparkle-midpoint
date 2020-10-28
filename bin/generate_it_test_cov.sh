@@ -12,7 +12,7 @@ pushd /sparkle-midpoint/
 for f in `ls ./sparkle-midpoint-cov`; do
 	mkdir tmp
 	tar -C ./tmp -xvf ./sparkle-midpoint-cov/$f
-	cp ./tmp/.coverage /sparkle-midpoint/.coverage.`echo $f | cut -d '.' -f1`
+	cp ./tmp/.coverage ./it-cov/.coverage.`echo $f | cut -d '.' -f1`
 	rm tmp -rf
 done
 
