@@ -17,7 +17,7 @@ for f in `ls ./sparkle-midpoint-cov`; do
 done
 
 cd it-cov
-./venv/bin/coverage combine --append
+../venv/bin/coverage combine --append
 mv .coverage ..
 cd ..
 
