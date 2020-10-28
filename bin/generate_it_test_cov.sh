@@ -7,7 +7,11 @@ fi
 
 mkdir it-cov
 sudo ln -s . /sparkle-midpoint
-pushd /sparkle-midpoint/
+cd /sparkle-midpoint/
+ls -al
+pwd
+ls -al ..
+
 
 for f in `ls ./sparkle-midpoint-cov`; do
 	mkdir tmp
