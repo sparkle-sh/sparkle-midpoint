@@ -6,18 +6,20 @@ if [ ! -d ./sparkle-midpoint-cov ]; then
 fi
 
 mkdir it-cov
-ln -s ./src ./it-cov/src
+ln -s . /sparkle-midpoint/
+pushd /sparkle-midpoint/
 
 for f in `ls ./sparkle-midpoint-cov`; do
 	mkdir tmp
 	tar -C ./tmp -xvf ./sparkle-midpoint-cov/$f
-	cp ./tmp/.coverage ./it-cov/.coverage.`echo $f | cut -d '.' -f1`
+	cp ./tmp/.coverage /sparkle-midpoint/.coverage.`echo $f | cut -d '.' -f1`
 	rm tmp -rf
 done
 
-
+cd it-cov
 ./venv/bin/coverage combine --append
-mv it-cov/.coverage .
+mv .coverage ..
+cd ..
 
 ./venv/bin/coverage report -m
 ./venv/bin/coverage html
