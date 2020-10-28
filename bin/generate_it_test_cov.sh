@@ -21,7 +21,8 @@ cd ..
 
 mv it-cov/.coverage .
 
-./venv/bin/coverage report -m 
-./venv/bin/coverage html 
+./venv/bin/coverage report -m
+./venv/bin/coverage html
 
 mv ./htmlcov it-cov
+
