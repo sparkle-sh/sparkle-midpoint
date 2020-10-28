@@ -13,3 +13,5 @@ omit =
 	./test/*
 	./src/api/endpoint/models/*
 
+[report]
+ignore_errors = True
