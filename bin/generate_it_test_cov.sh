@@ -6,7 +6,7 @@ if [ ! -d ./sparkle-midpoint-cov ]; then
 fi
 
 mkdir it-cov
-ln -s . /sparkle-midpoint/
+ln -s /sparkle-midpoint/ .
 pushd /sparkle-midpoint/
 
 for f in `ls ./sparkle-midpoint-cov`; do
