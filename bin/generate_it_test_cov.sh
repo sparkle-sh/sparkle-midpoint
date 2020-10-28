@@ -10,7 +10,6 @@ mkdir it-cov
 for f in `ls ./sparkle-midpoint-cov`; do
 	mkdir tmp
 	tar -C ./tmp -xvf ./sparkle-midpoint-cov/$f
-	cat ./tmp/.coverage
 	cp ./tmp/.coverage ./it-cov/.coverage.`echo $f | cut -d '.' -f1`
 	rm tmp -rf
 done
@@ -19,6 +18,7 @@ cd it-cov
 ../venv/bin/coverage combine
 cd ..
 
+cat it-cov/.coverage
 mv it-cov/.coverage .
 
 ./venv/bin/coverage report -m
