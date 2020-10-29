@@ -6,7 +6,6 @@ if [ ! -d ./sparkle-midpoint-cov ]; then
 fi
 
 mkdir it-cov
-ln -s ./src ./it-cov/src
 
 for f in `ls ./sparkle-midpoint-cov`; do
 	mkdir tmp
@@ -23,7 +22,10 @@ rm it-cov -rf
 docker run -t --detach --name cov-builder sparkle-midpoint 
 sleep 1
 docker ps
-docker exec --workdir /sparkle-midpoint/ cov-builder ./bin/run_unit_tests.sh
+docker exec --workdir /sparkle-midpoint/ cov-builder ./bin/venv/coverage report -m
+docker exec --workdir /sparkle-midpoint/ cov-builder ./bin/venv/coverage html
+
+
 
 
 
