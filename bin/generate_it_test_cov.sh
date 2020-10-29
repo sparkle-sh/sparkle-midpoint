@@ -22,8 +22,8 @@ rm it-cov -rf
 docker run -t --detach --name cov-builder sparkle-midpoint 
 sleep 1
 docker ps
-docker exec --workdir /sparkle-midpoint/ cov-builder ./bin/venv/coverage report -m
-docker exec --workdir /sparkle-midpoint/ cov-builder ./bin/venv/coverage html
+docker exec --workdir /sparkle-midpoint/ cov-builder ./venv/bin/coverage report -m
+docker exec --workdir /sparkle-midpoint/ cov-builder ./venv/bin/coverage html
 
 
 
