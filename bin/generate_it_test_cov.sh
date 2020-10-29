@@ -21,6 +21,7 @@ mv .coverage ..
 rm it-cov -rf
 
 docker run --name cov-builder -d sparkle-midpoint
+sleep 5
 docker exec --workdir /sparkle-midpoint/ cov-builder ./bin/run_unit_tests.sh
 
 
