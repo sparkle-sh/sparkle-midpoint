@@ -49,9 +49,9 @@ paths:
         - application/json
       parameters:
         - in: body
-          name: agent
+          name: Agent query info
           schema:
-            $ref: '#/definitions/Agent'
+            $ref: '#/definitions/AgentQuery'
       responses:
         200:
           description: Devices fetched successfully
@@ -119,6 +119,11 @@ paths:
     get:
       summary: Return value of sensor device
 definitions:
+  AgentQuery:
+    type: object
+    properties:
+      agent:
+        $ref: '#/definitions/Agent'
   DeviceValueQuery:
     type: object
     properties:
