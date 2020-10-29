@@ -3,7 +3,7 @@ from core.log import get_logger
 from src.core.error import *
 from .models import Error
 
-log = get_logger("api.endpoint.util")
+log = get_logger("api.endpoint.utils")
 
 
 def validate_payload(keywords, payload):

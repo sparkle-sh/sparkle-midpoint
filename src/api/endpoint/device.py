@@ -12,8 +12,8 @@ def setup_device_endpoints(agent_controller: AgentController,
     @bp.get("/")
     @handle_api_exceptions
     async def device_get(req):
-        agent = Agent.from_dict(validate_payload(['id'], req.json))
-        connector_client = agent_controller.get_connection_client(agent)
+        agent_query = AgentQuery.from_dict(validate_payload(["agent"], req.json))
+        connector_client = agent_controller.get_connection_client(agent_query.agent)
         devices = await device_controller.list_devices(connector_client)
         return response(devices, 200)
 
