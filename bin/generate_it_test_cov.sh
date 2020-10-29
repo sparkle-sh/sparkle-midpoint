@@ -18,9 +18,15 @@ done
 
 ./venv/bin/coverage combine --append
 mv it-cov/.coverage .
+rm it-cov -f
 
-./venv/bin/coverage report -m
-./venv/bin/coverage html
+docker run --name cov-builder -d sparkle-midpoint
+docker exec --workdir /sparkle-midpoint/ cov-builder ./bin/run_unit_tests.sh
 
-mv ./htmlcov it-cov
+
+
+#./venv/bin/coverage report -m
+#./venv/bin/coverage html
+
+#mv ./htmlcov it-cov
 
