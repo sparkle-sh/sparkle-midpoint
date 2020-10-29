@@ -10,3 +10,4 @@ from .version import Version
 from .devices import Devices
 from .device import Device
 from .device_state import DeviceState
+from .switch_device_state_query import SwitchDeviceStateQuery

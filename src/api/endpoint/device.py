@@ -2,11 +2,11 @@ import sanic
 from src.api.controllers.agent_controller import AgentController
 from src.api.controllers.device_controller import DeviceController
 from .utils import *
-from .models import Agent
+from .models import *
 
 
 def setup_device_endpoints(agent_controller: AgentController,
-                           device_controlller: DeviceController) -> sanic.Blueprint:
+                           device_controller: DeviceController) -> sanic.Blueprint:
     bp = sanic.Blueprint('device', '/device')
 
     @bp.get("/")
@@ -14,7 +14,7 @@ def setup_device_endpoints(agent_controller: AgentController,
     async def device_get(req):
         agent = Agent.from_dict(validate_payload(['id'], req.json))
         connector_client = agent_controller.get_connection_client(agent)
-        devices = await device_controlller.list_devices(connector_client)
+        devices = await device_controller.list_devices(connector_client)
         return response(devices, 200)
 
     @bp.get("/state")
