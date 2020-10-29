@@ -15,10 +15,10 @@ for f in `ls ./sparkle-midpoint-cov`; do
 	rm tmp -rf
 done
 
-
+cd it-cov
 ./venv/bin/coverage combine --append
-mv it-cov/.coverage .
-rm it-cov -f
+mv .coverage ..
+rm it-cov -rf
 
 docker run --name cov-builder -d sparkle-midpoint
 docker exec --workdir /sparkle-midpoint/ cov-builder ./bin/run_unit_tests.sh
