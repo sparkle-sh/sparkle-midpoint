@@ -36,4 +36,13 @@ def setup_device_endpoints(agent_controller: AgentController,
             switch_device_state_query.state)
         return empty_response(200)
 
+    @bp.get("/datasheet")
+    @handle_api_exceptions
+    async def device_datasheet_get(req):
+        keywords = ["device_id", "agent"]
+        device_query = DeviceQuery.from_dict(validate_payload(keywords, req.json))
+        connector_client = agent_controller.get_connection_client(device_query.agent)
+        device_datasheet = await device_controller.get_device_datasheet(connector_client, device_query.device_id)
+        return response(device_datasheet, 200)
+
     return bp

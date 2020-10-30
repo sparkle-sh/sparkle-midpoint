@@ -2,7 +2,9 @@ from src.transmission.models.v1.req import *
 from src.transmission.models.v1.res import * 
 from src.transmission.connector_client import ConnectorClient
 from src.core.error import ErrorCode, ApiError
-from src.api.endpoint.models import Devices, Device, DeviceState
+from src.api.endpoint.models import Devices, Device, DeviceState, SensorDeviceDatasheet, SwitchableDeviceDatasheet, SensorDeviceDatasheetDatasheet, SwitchableDeviceDatasheetDatasheet
+from src.transmission.models.v1.device_type import DeviceType
+
 
 
 class DeviceController(object):
@@ -26,5 +28,16 @@ class DeviceController(object):
         if not isinstance(res, AckResponse):
             raise ApiError(ErrorCode.CONNECTOR_RESPONSE_ERROR,
                            "Received unexpected response from connector")
+
+    async def get_device_datasheet(self, connector_client: ConnectorClient, device_id: int):
+        res = await connector_client.send_request(GetDeviceDatasheetRequest(device_id))
+        if not isinstance(res, GetDeviceDatasheetResponse):
+            raise ApiError(ErrorCode.CONNECTOR_RESPONSE_ERROR, 
+                            "Received unexpected response from connector")
+        if res.get_device_type() == DeviceType.SENSOR:
+            return  SensorDeviceDatasheet(SensorDeviceDatasheetDatasheet(res.get_datasheet()))
+        else:
+            return SwitchableDeviceDatasheet(SwitchableDeviceDatasheetDatasheet(res.get_datasheet()))
+       
 
         
