@@ -52,17 +52,6 @@ class GetDeviceDatasheetResponseTests(unittest.TestCase):
         self.assertRaises(ConnectorModelError,
                           lambda: GetDeviceDatasheetResponse(p))
 
-    def test_when_creating_with_good_payload_expect_no_throw(self):
-        ds = ['ab', 'cd']
-        p = {
-            "header": "get_device_datasheet_response",
-            "content": {
-                "datasheet": {"labels": ds}
-            }
-        }
-        res = GetDeviceDatasheetResponse(p)
-        self.assertEqual(res.get_datasheet()['labels'], ds)
-
     def test_when_creating_with_values_expect_switchable(self):
         ds = ['ab', 'cd']
         p = {
@@ -98,7 +87,7 @@ class GetDeviceStateResponseTests(unittest.TestCase):
                           lambda: GetDeviceStateResponse(p))
 
     def test_when_creating_with_good_payload_expect_no_throw(self):
-        p = {"header": "get_device_state_response", "content": {"state": 123}}
+        p = {"header": "get_device_state_response", "content": {"state_value": 123}}
         res = GetDeviceStateResponse(p)
         self.assertEqual(res.get_state(), 123)
 
