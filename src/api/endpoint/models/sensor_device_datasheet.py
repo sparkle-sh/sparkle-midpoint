@@ -7,6 +7,7 @@ from typing import List, Dict  # noqa: F401
 
 from .base_model_ import Model
 from . import util
+from .sensor_device_datasheet_datasheet import SensorDeviceDatasheetDatasheet
 
 
 class SensorDeviceDatasheet(Model):

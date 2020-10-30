@@ -28,4 +28,7 @@ class GetDeviceDatasheetResponse(Response):
         return self.device_type
 
     def get_datasheet(self) -> Dict:
-        return self.datasheet
+        if self.device_type == DeviceType.SENSOR:
+            return self.datasheet.get("labels")
+        else:
+            return self.datasheet.get("values")
