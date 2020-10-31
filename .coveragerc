@@ -5,9 +5,12 @@ source =
 	./src/api/endpoint
 	./src/api/controllers
 	./src/core
+	./src/event
 	./src/transmission
 	./src/transmission/models
 	./src/transmission/models/v1
+	./src/scheduler/
+	./src/scheduler/task
 omit = 
 	./venv/*
 	./test/*

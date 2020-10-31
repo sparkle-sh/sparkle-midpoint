@@ -8,8 +8,8 @@ class ErrorCode(enum.IntEnum):
     AGENT_NOT_EXIST = 100,
     INVALID_HANDSHAKE = 200,
     CONNECTOR_ERROR = 201,
-    CONNECTOR_RESPONSE_ERROR = 202
-
+    CONNECTOR_RESPONSE_ERROR = 202,
+    EVENT_ERROR = 500
 
 
 class SparkleFatalError(Exception):
@@ -40,6 +40,11 @@ class ConnectorError(SparkleError):
 
 class ConnectorModelError(ConnectorError):
     pass
+
+
+class EventError(SparkleError):
+    def __init__(self, description):
+        super().__init__(ErrorCode.EVENT_ERROR, description, name='EventError')
 
 
 class ConfigError(SparkleError):

@@ -5,7 +5,9 @@ import asyncio
 import aiomisc
 from core.log import get_logger
 from core import config
+from core.event.event_manager import EventManager
 from api.service import ApiService
+from scheduler.service import SchedulerService
 
 log = get_logger("main")
 
@@ -33,13 +35,17 @@ log.info("Loading config")
 config = config.Config("./cfg/config.json")
 log.info("Config loaded")
 
-log.info("Creating api service instance")
-api_service = ApiService(config)
-log.info("Api service instance created")
+event_manager = EventManager()
+
+log.info("Creating services instances")
+services = [
+    ApiService(config), SchedulerService(config, event_manager)
+]
+log.info("Services instances created")
 
 log.info("Installing uvloop")
 uvloop.install()
 
-with aiomisc.entrypoint(api_service, log_config=False) as loop:
+with aiomisc.entrypoint(*services, log_config=False) as loop:
     log.info("Starting event loop")
     loop.run_forever()
