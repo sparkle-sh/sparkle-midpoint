@@ -118,6 +118,22 @@ paths:
   /device/value:
     get:
       summary: Return value of sensor device
+      produces:
+        - application/json
+      parameters:
+        - in: body
+          name: Device value query info
+          schema:
+            $ref: '#/definitions/DeviceValueQuery'
+      responses:
+        200:
+          description: Device value fetched successfully
+          schema:
+            $ref: '#/definitions/DeviceValue'
+        400:
+          description: Something went wrong
+          schema:
+            $ref: '#/definitions/Error'
 definitions:
   AgentQuery:
     type: object
@@ -137,6 +153,9 @@ definitions:
           type: string
   DeviceValue:
     type: object
+    properties:
+      values:
+        type: object
   SwitchDeviceStateQuery:
     type: object
     properties:
@@ -196,11 +215,6 @@ definitions:
         type: string
       description:
         type: string 
-  SensorValue:
-    type: object
-    properties:
-      value:
-        type: float
   Agent:
     type: object
     properties:
