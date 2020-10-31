@@ -1,6 +1,7 @@
 import aiomisc
 import asyncio
 import sanic
+import monotonic
 from typing import Dict
 import uuid
 from typing import Dict
@@ -58,8 +59,10 @@ class SchedulerService(aiomisc.Service):
 
     async def update_tasks(self):
         log.info("Updating tasks")
+        time = monotonic.monotonic()
         for task_id, task in self.tasks.items():
-            await task.update()
+            if task.state is TaskState.Active and time >= task.schedule:
+                await task.update()
 
             if task.state is TaskState.Done:
                 self.tasks.pop(task_id)

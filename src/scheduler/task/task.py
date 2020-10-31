@@ -1,5 +1,6 @@
 import enum
 import dataclasses
+import monotonic
 from typing import Callable
 from transmission.connector_client import ConnectorClient
 from .actions import *
@@ -19,6 +20,7 @@ class TaskState(enum.IntEnum):
 @dataclasses.dataclass
 class Task(object):
     action: Action
+    schedule: int
     connector_client: ConnectorClient
     state: TaskState = TaskState.Active
 
@@ -29,6 +31,7 @@ class Task(object):
 class PeriodicTask(Task):
     async def update(self):
         await self.action()
+        self.schedule = monotonic.monotonic() + 30
 
 
 class DeferredTask(Task):
