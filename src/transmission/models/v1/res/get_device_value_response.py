@@ -4,7 +4,7 @@ from .response import Response
 from core.error import ConnectorModelError, ErrorCode
 
 
-class GetSensorValueResponse(Response):
+class GetDeviceValueResponse(Response):
     def __init__(self, payload: Dict):
         header = payload.get("header")
         if header != "get_sensor_value_response":

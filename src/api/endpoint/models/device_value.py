@@ -5,8 +5,8 @@ from datetime import date, datetime  # noqa: F401
 
 from typing import List, Dict  # noqa: F401
 
-from .base_model_ import Model
-from . import util
+from swagger_server.models.base_model_ import Model
+from swagger_server import util
 
 
 class DeviceValue(Model):
@@ -15,15 +15,21 @@ class DeviceValue(Model):
     Do not edit the class manually.
     """
 
-    def __init__(self):  # noqa: E501
+    def __init__(self, values: object=None):  # noqa: E501
         """DeviceValue - a model defined in Swagger
 
+        :param values: The values of this DeviceValue.  # noqa: E501
+        :type values: object
         """
         self.swagger_types = {
+            'values': object
         }
 
         self.attribute_map = {
+            'values': 'values'
         }
+
+        self._values = values
 
     @classmethod
     def from_dict(cls, dikt) -> 'DeviceValue':
@@ -35,3 +41,24 @@ class DeviceValue(Model):
         :rtype: DeviceValue
         """
         return util.deserialize_model(dikt, cls)
+
+    @property
+    def values(self) -> object:
+        """Gets the values of this DeviceValue.
+
+
+        :return: The values of this DeviceValue.
+        :rtype: object
+        """
+        return self._values
+
+    @values.setter
+    def values(self, values: object):
+        """Sets the values of this DeviceValue.
+
+
+        :param values: The values of this DeviceValue.
+        :type values: object
+        """
+
+        self._values = values
