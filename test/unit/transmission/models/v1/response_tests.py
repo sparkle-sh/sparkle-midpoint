@@ -17,7 +17,7 @@ class ResponseTests(unittest.TestCase):
         ("ack_response", AckResponse),
         ("get_device_state_response", GetDeviceStateResponse),
         ("get_device_datasheet_response", GetDeviceDatasheetResponse),
-        ("get_sensor_value_response", GetSensorValueResponse),
+        ("get_device_value_response", GetDeviceValueResponse),
         ("list_devices_response", ListDevicesResponse)
     ]
 
@@ -92,22 +92,22 @@ class GetDeviceStateResponseTests(unittest.TestCase):
         self.assertEqual(res.get_state(), 123)
 
 
-class GetSensorValueResponseTests(unittest.TestCase):
+class GetDeviceValueResponseTests(unittest.TestCase):
     def test_when_creating_with_wrong_header_expect_throw(self):
         p = {"header": "ff"}
         self.assertRaises(ConnectorModelError,
-                          lambda: GetSensorValueResponse(p))
+                          lambda: GetDeviceValueResponse(p))
 
     def test_when_creating_without_values_in_content_expect_throw(self):
         p = {"header": "get_sensor_value_response", "content": {}}
         self.assertRaises(ConnectorModelError,
-                          lambda: GetSensorValueResponse(p))
+                          lambda: GetDeviceValueResponse(p))
 
     def test_when_creating_with_good_payload_expect_no_throw(self):
         values = {"a": 1, "b": 2}
         p = {"header": "get_sensor_value_response",
              "content": {"values": values}}
-        res = GetSensorValueResponse(p)
+        res = GetDeviceValueResponse(p)
         self.assertEqual(res.get_values(), values)
 
 

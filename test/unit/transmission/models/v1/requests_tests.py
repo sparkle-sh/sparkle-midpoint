@@ -46,14 +46,14 @@ class GetDeviceStateRequestTests(unittest.TestCase):
         }
         self.assertEqual(payload, serialized)
 
-class GetSensorValueRequestTests(unittest.TestCase):
+class GetDeviceValueRequestTests(unittest.TestCase):
     def test_when_serializing_except_correct_result(self):
         device_id = 1
         labels = { "label1", "label2"}
-        req = GetSensorValueRequest(device_id, labels)
+        req = GetDeviceValueRequest(device_id, labels)
         serialized = req.serialize()
         payload = {
-            "header": "get_device_state_request",
+            "header": "get_sensor_value_request",
             "content": {
                 "device_id": device_id,
                 "labels": labels
