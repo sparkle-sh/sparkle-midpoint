@@ -6,7 +6,7 @@ import uuid
 from typing import Dict
 from core.log import get_logger
 from core.error import SparkleError
-from src.core.event import EventType
+from src.core.event.event import EventType
 from .task.task import Task, TaskState, TaskType
 
 log = get_logger("scheduler.service")
@@ -21,10 +21,15 @@ class SchedulerService(aiomisc.Service):
 
     async def start(self):
         log.info("Starting scheduler service")
+        await self.read_tasks_from_db()
         self.update_job.start(interval=1)
 
     async def stop(self, exception: Exception = None):
         log.info("Stopping scheduler service")
+
+    async def read_tasks_from_db(self):
+        # to implement
+        pass
 
     async def update(self):
         await self.read_events()
