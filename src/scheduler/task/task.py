@@ -2,6 +2,7 @@ import enum
 import dataclasses
 from typing import Callable
 from transmission.connector_client import ConnectorClient
+from .actions import *
 
 
 class TaskType(enum.IntEnum):
@@ -17,7 +18,7 @@ class TaskState(enum.IntEnum):
 
 @dataclasses.dataclass
 class Task(object):
-    action: Callable[[ConnectorClient], None]
+    action: Action
     connector_client: ConnectorClient
     state: TaskState = TaskState.Active
 
