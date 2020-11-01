@@ -12,7 +12,8 @@ def validate_payload(keywords, payload):
         raise ApiError(ErrorCode.CORRUPTED_PAYLOAD, "Received empty request")
     for keyword in keywords:
         if keyword not in payload:
-            log.warning(f"Received payload is corrupted, key {keyword} missing")
+            log.warning(
+                f"Received payload is corrupted, key {keyword} missing")
             raise ApiError(ErrorCode.CORRUPTED_PAYLOAD,
                            f'Received payload is corrupted, key {keyword} missing')
     return payload
@@ -22,7 +23,7 @@ def handle_api_exceptions(fun):
     async def wrapper(*args, **kwargs):
         try:
             return await fun(*args, **kwargs)
-        except SparkleError as e:  # Cannot catch coroutine exceptions  
+        except SparkleError as e:  # Cannot catch coroutine exceptions
             log.info("Catched exception when handling request: %s", e)
             return error_response(e.code, e.description)
     return wrapper
