@@ -27,14 +27,23 @@ class AgentController(object):
         return Agent(agent_id)
 
     def get_connection_client(self, agent: Agent):
+        if agent.id is None:
+            log.warning(f"Agent does not contain key id")
+            raise ApiError(ErrorCode.INVALID_AGENT, "Agent does not contain key id")
         if agent.id not in self.agents:
-            log.warning(f"Cannot get connector client with agent id {agent.id}, agent not found")
+            log.warning(
+                f"Cannot get connector client with agent id {agent.id}, agent not found")
             raise ApiError(ErrorCode.AGENT_NOT_EXIST, "Agent does not exist")
         return self.agents.get(agent.id)
 
     async def disconnect(self, agent: Agent):
+        if agent.id is None:
+            log.warning(f"Agent does not contain key id")
+            raise ApiError(ErrorCode.INVALID_AGENT,
+                           "Agent does not contain key id")
         if agent.id not in self.agents:
-            log.warning(f"Cannot disconnect agent with id {agent.id}, agent not found")
+            log.warning(
+                f"Cannot disconnect agent with id {agent.id}, agent not found")
             raise ApiError(ErrorCode.AGENT_NOT_EXIST, "Agent does not exist")
         connector_client = self.agents.pop(agent.id)
         await connector_client.disconnect()
