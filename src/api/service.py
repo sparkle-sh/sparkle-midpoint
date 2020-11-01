@@ -5,7 +5,7 @@ import typing
 from core.log import get_logger
 from core.error import SparkleError
 from api.endpoint.endpoint import setup_endpoints
-from api.controllers import agent_controller, device_controller
+from api.controllers import agent_controller, device_controller, task_controller
 from api.endpoint.utils import handle_api_exceptions
 
 
@@ -13,12 +13,14 @@ log = get_logger("api.service")
 
 
 class ApiService(aiomisc.Service):
-    def __init__(self, cfg):
+    def __init__(self, cfg, event_manager):
         self.cfg = cfg
         self.app = sanic.Sanic(name="sparkle-midpoint")
+        self.event_emitter = event_manager.register_service("api")
         self.controllers = {
             'agent': agent_controller.AgentController(self.cfg),
-            'device': device_controller.DeviceController()
+            'device': device_controller.DeviceController(),
+            'task': task_controller.TaskController(self.event_emitter)
         }
 
     async def start(self):

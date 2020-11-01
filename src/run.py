@@ -39,7 +39,7 @@ event_manager = EventManager()
 
 log.info("Creating services instances")
 services = [
-    ApiService(config), SchedulerService(config, event_manager)
+    ApiService(config, event_manager), SchedulerService(config, event_manager)
 ]
 log.info("Services instances created")
 

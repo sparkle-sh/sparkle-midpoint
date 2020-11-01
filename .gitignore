@@ -1,5 +1,7 @@
 .vim
 
+*.h5
+
 *.html
 *.swp
 *.swo
