@@ -17,7 +17,7 @@ class ResponseTests(unittest.TestCase):
         ("ack_response", AckResponse),
         ("get_device_state_response", GetDeviceStateResponse),
         ("get_device_datasheet_response", GetDeviceDatasheetResponse),
-        ("get_device_value_response", GetDeviceValueResponse),
+        ("get_sensor_value_response", GetDeviceValueResponse),
         ("list_devices_response", ListDevicesResponse)
     ]
 
@@ -87,7 +87,8 @@ class GetDeviceStateResponseTests(unittest.TestCase):
                           lambda: GetDeviceStateResponse(p))
 
     def test_when_creating_with_good_payload_expect_no_throw(self):
-        p = {"header": "get_device_state_response", "content": {"state": {"state_value": 123}}}
+        p = {"header": "get_device_state_response",
+             "content": {"state": {"state_value": 123}}}
         res = GetDeviceStateResponse(p)
         self.assertEqual(res.get_state(), 123)
 

@@ -9,6 +9,7 @@ from core.log import get_logger
 
 log = get_logger("transmission.connector_client")
 
+
 class ConnectorClient(object):
     def __init__(self, host: str, port: int):
         self.host = host
