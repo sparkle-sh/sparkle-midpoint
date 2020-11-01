@@ -11,6 +11,6 @@ HEADER_TO_RESPONSE = {
     "ack_response": AckResponse,
     "get_device_state_response": GetDeviceStateResponse,
     "get_device_datasheet_response": GetDeviceDatasheetResponse,
-    "get_device_value_response": GetDeviceValueResponse,
+    "get_sensor_value_response": GetDeviceValueResponse,
     "list_devices_response": ListDevicesResponse
 }

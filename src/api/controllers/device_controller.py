@@ -1,10 +1,10 @@
+from typing import List
 from src.transmission.models.v1.req import *
-from src.transmission.models.v1.res import * 
+from src.transmission.models.v1.res import *
 from src.transmission.connector_client import ConnectorClient
 from src.core.error import ErrorCode, ApiError
-from src.api.endpoint.models import Devices, Device, DeviceState, SensorDeviceDatasheet, SwitchableDeviceDatasheet, SensorDeviceDatasheetDatasheet, SwitchableDeviceDatasheetDatasheet
+from src.api.endpoint.models import *
 from src.transmission.models.v1.device_type import DeviceType
-
 
 
 class DeviceController(object):
@@ -22,7 +22,7 @@ class DeviceController(object):
             raise ApiError(ErrorCode.CONNECTOR_RESPONSE_ERROR,
                            "Received unexpected response from connector")
         return DeviceState(state_value=res.get_state())
-    
+
     async def switch_device_state(self, connector_client: ConnectorClient, device_id: int, state: DeviceState):
         res = await connector_client.send_request(SwitchDeviceStateRequest(device_id, state.state_value))
         if not isinstance(res, AckResponse):
@@ -32,12 +32,16 @@ class DeviceController(object):
     async def get_device_datasheet(self, connector_client: ConnectorClient, device_id: int):
         res = await connector_client.send_request(GetDeviceDatasheetRequest(device_id))
         if not isinstance(res, GetDeviceDatasheetResponse):
-            raise ApiError(ErrorCode.CONNECTOR_RESPONSE_ERROR, 
-                            "Received unexpected response from connector")
+            raise ApiError(ErrorCode.CONNECTOR_RESPONSE_ERROR,
+                           "Received unexpected response from connector")
         if res.get_device_type() == DeviceType.SENSOR:
-            return  SensorDeviceDatasheet(SensorDeviceDatasheetDatasheet(res.get_datasheet()))
+            return SensorDeviceDatasheet(SensorDeviceDatasheetDatasheet(res.get_datasheet()))
         else:
             return SwitchableDeviceDatasheet(SwitchableDeviceDatasheetDatasheet(res.get_datasheet()))
-       
 
-        
+    async def get_device_value(self, connector_client: ConnectorClient, device_id: int, labels: List[str]):
+        res = await connector_client.send_request(GetDeviceValueRequest(device_id, labels))
+        if not isinstance(res, GetDeviceValueResponse):
+            raise ApiError(ErrorCode.CONNECTOR_RESPONSE_ERROR,
+                           "Received unexpected response from connector")
+        return DeviceValue(res.get_values())
