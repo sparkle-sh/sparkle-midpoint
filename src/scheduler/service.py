@@ -6,11 +6,18 @@ from typing import Dict
 import uuid
 from typing import Dict
 from core.log import get_logger
-from core.error import SparkleError
+from core.error import SparkleError, SchedulerError
 from src.core.event.event import EventType
 from .task.task import Task, TaskState, TaskType
 
 log = get_logger("scheduler.service")
+
+
+def make_err_response(code, description) -> Dict:
+    return {
+        "error_code": code,
+        "error_description": description
+    }
 
 
 class SchedulerService(aiomisc.Service):
@@ -52,9 +59,14 @@ class SchedulerService(aiomisc.Service):
             log.debug("Received event: %s", event)
             handler = task_to_handler.get(event.event_type)
             if handler is None:
-                pass
-                # handle this case
-            res = await handler(event.payload)
+                res = make_err_response(
+                    777, "Scheduler received unknown request")
+            else:
+                try:
+                    res = await handler(event.payload)
+                except SparkleError as e:
+                    res = make_err_response(e.code, e.description)
+
             self.event_emitter.send_result(event.sender, res, event.id)
 
     async def update_tasks(self):
@@ -67,14 +79,41 @@ class SchedulerService(aiomisc.Service):
             if task.state is TaskState.Done:
                 self.tasks.pop(task_id)
 
-    def insert_task(self, payload) -> Dict:
+    async def insert_task(self, payload) -> Dict:
+        task_type = payload.get("task_type")
+        if task_type == 'deferred':
+            task = await self.create_deferred_task(payload)
+        else:
+            task = await self.create_periodic_task(payload)
+        await task.init()
+        task_id = str(uuid.uuid4())
+        self.tasks.update({task_id: task})
+        return {}
+
+    async def create_periodic_task(self, payload) -> Dict:
+        interval = payload.get("interval")
+
+    async def create_deferred_task(self, payload) -> Dict:
+        delay = payload.get("delay")
+
+    async def get_task(self, payload) -> Dict:
+        task_id = payload.get("task_id")
+        if task_id is None:
+            raise SchedulerError(777, 'Task id is missing')
+        if task_id not in self.tasks:
+            raise SchedulerError(777, f'Could not find task with id {task_id}')
+        task = self.tasks.get(task_id)
+        return task.serialize()
+
+    async def update_task(self, payload) -> Dict:
         pass
 
-    def get_task(self, payload) -> Dict:
-        pass
-
-    def update_task(self, payload) -> Dict:
-        pass
-
-    def delete_task(self, payload) -> Dict:
-        pass
+    async def delete_task(self, payload) -> Dict:
+        task_id = payload.get("task_id")
+        if task_id is None:
+            raise SchedulerError(777, 'Task id is missing')
+        if task not in self.tasks:
+            raise SchedulerError(777, f'Could not find task with id {task_id}')
+        task = self.tasks.pop(task_id)
+        await task.deinit()
+        return {}
