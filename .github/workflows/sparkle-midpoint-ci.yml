@@ -42,18 +42,18 @@ jobs:
         with:
           name: test-logs
           path: logs
-      - name: Generate integration tests coverage report
-        run: ./bin/generate_it_test_cov.sh 
+          # - name: Generate integration tests coverage report
+          #run: ./bin/generate_it_test_cov.sh
       - name: Archive unit test coverage artifacts
         uses: actions/upload-artifact@v2
         with:
           name: unit-test-cov
           path: cov
-      - name: Archive integration test coverage artifacts
-        uses: actions/upload-artifact@v2
-        with:
-          name: integration-test-cov
-          path: it-cov
+          #      - name: Archive integration test coverage artifacts
+          #uses: actions/upload-artifact@v2
+          #with:
+          #name: integration-test-cov
+          #path: it-cov
       - name: Generate swagger documentation for API
         run: ./bin/gen_api_docs.py < ./misc/swagger.yaml > api-docs.html
       - name: Archive documentation
