@@ -48,6 +48,11 @@ class EventError(SparkleError):
         super().__init__(ErrorCode.EVENT_ERROR, description, name='EventError')
 
 
+class SchedulerError(SparkleError):
+    def __init__(self, code, description):
+        super().__init__(code, description, name='SchedulerError')
+
+
 class ConfigError(SparkleError):
     def __init__(self, msg):
         super().__init__(ErrorCode.INVALID_CONFIG, msg, name='SparkleConfigError')

@@ -1,4 +1,4 @@
-swagger: '2.0'
+swagger: "2.0"
 info:
   description: API for sparkle midpoint
   version: 0.1.0
@@ -13,35 +13,35 @@ paths:
         200:
           description: OK
           schema:
-            $ref: '#/definitions/Info'
+            $ref: "#/definitions/Info"
   /agent:
     post:
       summary: Creates new connector agent
       produces:
-        - application/json  
+        - application/json
       responses:
         201:
           description: Agent created successfully, agent_id is returned
           schema:
-            $ref: '#/definitions/Agent'
+            $ref: "#/definitions/Agent"
         400:
           description: Something went wrong, see error.description for more
           schema:
-            $ref: '#/definitions/Error'
+            $ref: "#/definitions/Error"
     delete:
       summary: Disconnects and removes agenti
       parameters:
         - in: body
           name: agent
           schema:
-            $ref: '#/definitions/Agent'
+            $ref: "#/definitions/Agent"
       responses:
         200:
           description: Agent removed and disconnected successfully
         400:
           description: Something went wrong, agent should be disconnected and removed anyway
           schema:
-            $ref: '#/definitions/Error'
+            $ref: "#/definitions/Error"
   /device:
     get:
       summary: Returns list of connected devices
@@ -51,16 +51,16 @@ paths:
         - in: body
           name: Agent query info
           schema:
-            $ref: '#/definitions/AgentQuery'
+            $ref: "#/definitions/AgentQuery"
       responses:
         200:
           description: Devices fetched successfully
           schema:
-            $ref: '#/definitions/Devices'
+            $ref: "#/definitions/Devices"
         400:
           description: Something went wrong
           schema:
-            $ref: '#/definitions/Error'
+            $ref: "#/definitions/Error"
   /device/state:
     get:
       summary: Returns device state
@@ -70,32 +70,32 @@ paths:
         - in: body
           name: Device query info
           schema:
-            $ref: '#/definitions/DeviceQuery'
+            $ref: "#/definitions/DeviceQuery"
       responses:
         200:
           description: Device state fetched successfully
           schema:
-            $ref: '#/definitions/DeviceState'
+            $ref: "#/definitions/DeviceState"
         400:
           description: Something went wrong
           schema:
-            $ref: '#/definitions/Error'
+            $ref: "#/definitions/Error"
     put:
       summary: Switches device state
       parameters:
         - in: body
           name: Switch device query info
           schema:
-            $ref: '#/definitions/SwitchDeviceStateQuery'
+            $ref: "#/definitions/SwitchDeviceStateQuery"
       responses:
-        200: 
+        200:
           description: Device state changed successfully
         400:
           description: Something went wrong
           schema:
-            $ref: '#/definitions/Error'
+            $ref: "#/definitions/Error"
   /device/datasheet:
-    get: 
+    get:
       summary: Returns device datasheet
       produces:
         - application/json
@@ -103,18 +103,18 @@ paths:
         - in: body
           name: Device query info
           schema:
-            $ref: '#/definitions/DeviceQuery'
+            $ref: "#/definitions/DeviceQuery"
       responses:
         200:
           description: Device datasheet fetched successfully
           schema:
             oneOf:
-              - $ref: '#/definitions/SensorDeviceDatasheet'
-              - $ref: '#/definitions/SwitchableDeviceDatasheet'
+              - $ref: "#/definitions/SensorDeviceDatasheet"
+              - $ref: "#/definitions/SwitchableDeviceDatasheet"
         400:
           description: Something went wrong
           schema:
-            $ref: '#/definitions/Error'
+            $ref: "#/definitions/Error"
   /device/value:
     get:
       summary: Return value of sensor device
@@ -124,29 +124,136 @@ paths:
         - in: body
           name: Device value query info
           schema:
-            $ref: '#/definitions/DeviceValueQuery'
+            $ref: "#/definitions/DeviceValueQuery"
       responses:
         200:
           description: Device value fetched successfully
           schema:
-            $ref: '#/definitions/DeviceValue'
+            $ref: "#/definitions/DeviceValue"
         400:
           description: Something went wrong
           schema:
-            $ref: '#/definitions/Error'
+            $ref: "#/definitions/Error"
+  /task:
+    get:
+      summary: Return task informations
+      produces:
+        - application/json
+      parameters:
+        - in: body
+          name: Task id
+          schema:
+            $ref: "#/definitions/TaskId"
+      responses:
+        200:
+          description: Task found and fetched successfully
+          schema:
+            $ref: "#/definitions/Task"
+        400:
+          description: Something went wrong
+          schema:
+            $ref: "#/definitions/Error"
+    post:
+      summary: Inserts new task
+      produces:
+        - application/json
+      parameters:
+        - in: body
+          name: Task description
+          schema:
+            $ref: "#/definitions/TaskDescription"
+      responses:
+        201:
+          description: Task added successfully
+          schema:
+            $ref: "#/definitions/TaskId"
+        400:
+          description: Something went wrong
+          schema:
+            $ref: "#/definitions/Error"
+    delete:
+      summary: Remove existing task
+      produces:
+        - application/json
+      parameters:
+        - in: body
+          name: Task id
+          schema:
+            $ref: "#/definitions/TaskId"
+      responses:
+        200:
+          description: Task removed successfully
+        400:
+          description: Something went wrong
+          schema:
+            $ref: "#/definitions/Error"
+    put:
+      summary: Update existing task
+      produces:
+        - application/json
+      parameters:
+        - in: body
+          name: Updated task
+          schema:
+            $ref: "#/definitions/TaskUpdate"
+      responses:
+        200:
+          description: Task updated successfully
+        400:
+          description: Something went wrong
+          schema:
+            $ref: "#/definitions/Error"
 definitions:
+  TaskUpdate:
+    type: object
+    properties:
+      task_id:
+        type: string
+      description:
+        $ref: "#/definitions/TaskDescription"
+  Task:
+    type: object
+    properties:
+      description:
+        $ref: "#/definitions/TaskDescription"
+      status:
+        type: string
+  TaskDescription:
+    type: object
+    required: ["type", "action"]
+    properties:
+      type:
+        type: string
+      action:
+        $ref: "#/definitions/Action"
+      delay:
+        type: integer
+      interval:
+        type: integer
+  Action:
+    type: object
+    properties:
+      name:
+        type: string
+      device_id:
+        type: integer
+  TaskId:
+    type: object
+    properties:
+      task_id:
+        type: string
   AgentQuery:
     type: object
     properties:
       agent:
-        $ref: '#/definitions/Agent'
+        $ref: "#/definitions/Agent"
   DeviceValueQuery:
     type: object
     properties:
       device_id:
         type: integer
       agent:
-        $ref: '#/definitions/Agent'
+        $ref: "#/definitions/Agent"
       labels:
         type: array
         items:
@@ -162,16 +269,16 @@ definitions:
       device_id:
         type: integer
       agent:
-        $ref: '#/definitions/Agent'
+        $ref: "#/definitions/Agent"
       state:
-        $ref: '#/definitions/DeviceState'
+        $ref: "#/definitions/DeviceState"
   DeviceQuery:
     type: object
     properties:
       device_id:
         type: integer
       agent:
-        $ref: '#/definitions/Agent'
+        $ref: "#/definitions/Agent"
   SwitchableDeviceDatasheet:
     type: object
     properties:
@@ -203,7 +310,7 @@ definitions:
       devices:
         type: array
         items:
-          $ref: '#/definitions/Device'
+          $ref: "#/definitions/Device"
   Device:
     type: object
     properties:
@@ -214,7 +321,7 @@ definitions:
       name:
         type: string
       description:
-        type: string 
+        type: string
   Agent:
     type: object
     properties:
@@ -226,13 +333,13 @@ definitions:
       name:
         type: string
       version:
-        $ref: '#/definitions/Version' 
+        $ref: "#/definitions/Version"
   Version:
     type: object
     required:
-    - major
-    - minor
-    - build
+      - major
+      - minor
+      - build
     properties:
       major:
         type: integer
