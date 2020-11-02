@@ -137,15 +137,107 @@ paths:
   /task:
     get:
       summary: Return task informations
+      produces:
+        - application/json
+      parameters:
+        - in: body
+          name: Task id
+          schema:
+            $ref: "#/definitions/TaskId"
+      responses:
+        200:
+          description: Task found and fetched successfully
+          schema:
+            $ref: "#/definitions/Task"
+        400:
+          description: Something went wrong
+          schema:
+            $ref: "#/definitions/Error"
     post:
-      summary: Insert new task
+      summary: Inserts new task
+      produces:
+        - application/json
+      parameters:
+        - in: body
+          name: Task description
+          schema:
+            $ref: "#/definitions/TaskDescription"
+      responses:
+        201:
+          description: Task added successfully
+          schema:
+            $ref: "#/definitions/TaskId"
+        400:
+          description: Something went wrong
+          schema:
+            $ref: "#/definitions/Error"
     delete:
-      summary: Remove task
+      summary: Remove existing task
+      produces:
+        - application/json
+      parameters:
+        - in: body
+          name: Task id
+          schema:
+            $ref: "#/definitions/TaskId"
+      responses:
+        200:
+          description: Task removed successfully
+        400:
+          description: Something went wrong
+          schema:
+            $ref: "#/definitions/Error"
     put:
       summary: Update existing task
-
+      produces:
+        - application/json
+      parameters:
+        - in: body
+          name: Updated task
+          schema:
+            $ref: "#/definitions/TaskUpdate"
+      responses:
+        200:
+          description: Task updated successfully
+        400:
+          description: Something went wrong
+          schema:
+            $ref: "#/definitions/Error"
 definitions:
-  TaskQuery:
+  TaskUpdate:
+    type: object
+    properties:
+      task_id:
+        type: string
+      description:
+        $ref: "#/definitions/TaskDescription"
+  Task:
+    type: object
+    properties:
+      description:
+        $ref: "#/definitions/TaskDescription"
+      status:
+        type: string
+  TaskDescription:
+    type: object
+    required: ["type", "action"]
+    properties:
+      type:
+        type: string
+      action:
+        $ref: "#/definitions/Action"
+      delay:
+        type: integer
+      interval:
+        type: integer
+  Action:
+    type: object
+    properties:
+      name:
+        type: string
+      device_id:
+        type: integer
+  TaskId:
     type: object
     properties:
       task_id:

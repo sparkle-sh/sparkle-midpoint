@@ -6,6 +6,7 @@ from typing import Dict
 from core.log import get_logger
 from .agent import setup_agent_endpoints
 from .device import setup_device_endpoints
+from .task import setup_task_endpoints
 from .utils import error_response
 
 log = get_logger("api.endpoint.endpoint")
@@ -17,12 +18,16 @@ def setup_endpoints(app: sanic.Sanic, controllers: Dict):
 
     agent_controller = controllers.get("agent")
     device_controller = controllers.get("device")
+    task_controller = controllers.get("task")
 
     log.info("Loading agent endpoints")
     app.blueprint(setup_agent_endpoints(agent_controller))
 
     log.info("Loading device endpoints")
     app.blueprint(setup_device_endpoints(agent_controller, device_controller))
+
+    log.info("Loading device endpoints")
+    app.blueprint(setup_task_endpoints(task_controller))
 
     @app.exception(sanic.exceptions.NotFound)
     async def handle_404(request, exception):
@@ -38,7 +43,8 @@ def setup_endpoints(app: sanic.Sanic, controllers: Dict):
 
     @app.exception(sanic.exceptions.MethodNotSupported)
     async def handle_405(request, exception):
-        log.warning(f"Method {request.method} not allowed for url {request.url}")
+        log.warning(
+            f"Method {request.method} not allowed for url {request.url}")
         return error_response(
             400, f"Method {request.method} not allowed for url {request.url}", status_code=405)
 

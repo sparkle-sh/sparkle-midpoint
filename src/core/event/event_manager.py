@@ -57,7 +57,7 @@ class EventEmitter(object):
 
     async def emit_event_to(self, destination, payload, type=EventType.INSERT_TASK, timeout=15.0):
         event_id = self.ev_sender(
-            Event(self.ident, destination, payload, type))
+            Event(self.ident, destination, payload, type, id=uuid.uuid4()))
 
         async def result_waiter(interval=0.1):
             while True:

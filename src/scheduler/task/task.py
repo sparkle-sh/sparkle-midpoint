@@ -18,7 +18,7 @@ class TaskState(enum.IntEnum):
 
 
 class Task(object):
-    def __init__(self, action: Action, schedule: int, state: TaskState = TaskState.Active):
+    def __init__(self, action: TaskAction, schedule: int, state: TaskState = TaskState.Active):
         self.action = action
         self.schedule = schedule
         self.state = state
@@ -26,6 +26,7 @@ class Task(object):
     async def init(self, connector_host, connector_port):
         self.connector_client = ConnectorClient(connector_host, connector_port)
         await self.connector_client.connect()
+        await self.connector_client.initialize_session()
 
     async def deinit(self):
         await self.connector_client.disconnect()
@@ -38,20 +39,28 @@ class Task(object):
 
 
 class PeriodicTask(Task):
-    def __init__(self, action: Action, interval: int):
+    def __init__(self, action: TaskAction, interval: int):
         super().__init__(action, schedule=monotonic.monotonic() + interval)
         self.interval = interval
 
     async def update(self):
-        await self.action()
+        succeed = await self.action.execute(self.connector_client)
+        print("xd1")
+        if not succeed:
+            self.state = TaskState.Failed
+            print("Xd2")
+            return
         self.schedule = monotonic.monotonic() + self.interval
 
 
 class DeferredTask(Task):
-    def __init__(self, action: Action, delay: int):
+    def __init__(self, action: TaskAction, delay: int):
         super().__init__(action, schedule=monotonic.monotonic() + delay)
         self.delay = delay
 
     async def update(self):
-        await self.action()
+        succeed = await self.action.execute(self.connector_client)
+        if not succeed:
+            self.state = TaskState.Failed
+            return
         self.state = TaskState.Done

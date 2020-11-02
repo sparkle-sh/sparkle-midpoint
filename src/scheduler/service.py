@@ -8,7 +8,8 @@ from typing import Dict
 from core.log import get_logger
 from core.error import SparkleError, SchedulerError
 from src.core.event.event import EventType
-from .task.task import Task, TaskState, TaskType
+from .task.task import Task, TaskState, TaskType, PeriodicTask, DeferredTask
+from .task.actions import *
 
 log = get_logger("scheduler.service")
 
@@ -66,7 +67,6 @@ class SchedulerService(aiomisc.Service):
                     res = await handler(event.payload)
                 except SparkleError as e:
                     res = make_err_response(e.code, e.description)
-
             self.event_emitter.send_result(event.sender, res, event.id)
 
     async def update_tasks(self):
@@ -80,21 +80,29 @@ class SchedulerService(aiomisc.Service):
                 self.tasks.pop(task_id)
 
     async def insert_task(self, payload) -> Dict:
-        task_type = payload.get("task_type")
+        task_type = payload.get("type")
+        action = string_to_action(
+            payload['action']['name'], payload['action']['device_id'])
         if task_type == 'deferred':
-            task = await self.create_deferred_task(payload)
+            task = await self.create_deferred_task(payload, action)
         else:
-            task = await self.create_periodic_task(payload)
-        await task.init()
+            task = await self.create_periodic_task(payload, action)
+        await task.init(self.cfg.connector.host, self.cfg.connector.port)
         task_id = str(uuid.uuid4())
         self.tasks.update({task_id: task})
-        return {}
+        return {
+            'task_id': task_id
+        }
 
-    async def create_periodic_task(self, payload) -> Dict:
+    async def create_periodic_task(self, payload, action) -> Dict:
+        print("periodic")
         interval = payload.get("interval")
+        return PeriodicTask(action, interval)
 
-    async def create_deferred_task(self, payload) -> Dict:
+    async def create_deferred_task(self, payload, action) -> Dict:
+        print("deff")
         delay = payload.get("delay")
+        return DeferredTask(action, payload)
 
     async def get_task(self, payload) -> Dict:
         task_id = payload.get("task_id")
@@ -112,7 +120,7 @@ class SchedulerService(aiomisc.Service):
         task_id = payload.get("task_id")
         if task_id is None:
             raise SchedulerError(777, 'Task id is missing')
-        if task not in self.tasks:
+        if task_id not in self.tasks:
             raise SchedulerError(777, f'Could not find task with id {task_id}')
         task = self.tasks.pop(task_id)
         await task.deinit()

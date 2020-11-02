@@ -17,10 +17,13 @@ class Event(object):
     destination: str
     payload: Dict
     event_type: EventType = EventType.INSERT_TASK
-    id: uuid.UUID = uuid.uuid1()
+    id: uuid.UUID = uuid.uuid4()
 
     def __str__(self) -> str:
-        return f'<Event: {sender}/{destination}/event_type>\n{payload}'
+        return f'<Event: {self.sender}/{self.destination}/{self.event_type}/{self.id}>\n{self.payload}'
+
+    def __hash__(self):
+        return hash(self.id)
 
 
 @dataclasses.dataclass
