@@ -23,7 +23,8 @@ paths:
         201:
           description: Agent created successfully, agent_id is returned
           schema:
-            $ref: "#/definitions/Agent"
+            type: string
+            required: true
         400:
           description: Something went wrong, see error.description for more
           schema:
@@ -242,16 +243,10 @@ paths:
       produces:
         - application/json
       parameters:
-        - in: header
-          name: Task-ID
-          description: ID of task to update
-          schema:
-            type: string
-            required: true
         - in: body
-          name: Updated task description
+          name: Updated task
           schema:
-            $ref: "#/definitions/TaskDescription"
+            $ref: "#/definitions/TaskUpdate"
       responses:
         200:
           description: Task updated successfully
@@ -260,6 +255,13 @@ paths:
           schema:
             $ref: "#/definitions/Error"
 definitions:
+  TaskUpdate:
+    type: object
+    properties:
+      task_id:
+        type: string
+      description:
+        $ref: "#/definitions/TaskDescription"
   Task:
     type: object
     properties:
