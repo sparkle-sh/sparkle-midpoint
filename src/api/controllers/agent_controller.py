@@ -26,14 +26,14 @@ class AgentController(object):
 
         return Agent(agent_id)
 
-    def get_connector_client(self, agent_id: int):
+    def get_connector_client(self, agent_id: str):
         if agent_id not in self.agents:
             log.warning(
                 f"Cannot get connector client with agent id {agent_id}, agent not found")
             raise ApiError(ErrorCode.AGENT_NOT_EXIST, "Agent does not exist")
         return self.agents.get(agent_id)
 
-    async def disconnect(self, agent_id: int):
+    async def disconnect(self, agent_id: str):
         if agent_id not in self.agents:
             log.warning(
                 f"Cannot disconnect agent with id {agent_id}, agent not found")

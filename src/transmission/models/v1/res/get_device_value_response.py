@@ -13,7 +13,7 @@ class GetDeviceValueResponse(Response):
         content = payload.get("content")
         if "values" not in content:
             raise ConnectorModelError(
-                ErrorCode.CONNECTOR_RESPONSE_ERROR, "datasheet field is required")
+                ErrorCode.CONNECTOR_RESPONSE_ERROR, "value field is required")
         self.values = content.get("values")
 
     def get_values(self) -> Dict:

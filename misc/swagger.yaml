@@ -307,7 +307,7 @@ definitions:
       datasheet:
         type: object
         properties:
-          values:
+          states:
             type: array
             items:
               type: integer
