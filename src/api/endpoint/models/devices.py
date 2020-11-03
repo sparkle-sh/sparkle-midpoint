@@ -5,8 +5,8 @@ from datetime import date, datetime  # noqa: F401
 
 from typing import List, Dict  # noqa: F401
 
-from swagger_server.models.base_model_ import Model
-from swagger_server import util
+from .base_model_ import Model
+from . import util
 
 
 class Devices(Model):
@@ -15,7 +15,7 @@ class Devices(Model):
     Do not edit the class manually.
     """
 
-    def __init__(self, devices: List[Device]=None):  # noqa: E501
+    def __init__(self, devices: List[Device] = None):  # noqa: E501
         """Devices - a model defined in Swagger
 
         :param devices: The devices of this Devices.  # noqa: E501

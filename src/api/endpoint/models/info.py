@@ -5,8 +5,8 @@ from datetime import date, datetime  # noqa: F401
 
 from typing import List, Dict  # noqa: F401
 
-from swagger_server.models.base_model_ import Model
-from swagger_server import util
+from .base_model_ import Model
+from . import util
 
 
 class Info(Model):
@@ -15,7 +15,7 @@ class Info(Model):
     Do not edit the class manually.
     """
 
-    def __init__(self, name: str=None, version: Version=None):  # noqa: E501
+    def __init__(self, name: str = None, version: Version = None):  # noqa: E501
         """Info - a model defined in Swagger
 
         :param name: The name of this Info.  # noqa: E501

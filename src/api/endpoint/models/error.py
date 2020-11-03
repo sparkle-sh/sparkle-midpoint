@@ -5,8 +5,8 @@ from datetime import date, datetime  # noqa: F401
 
 from typing import List, Dict  # noqa: F401
 
-from swagger_server.models.base_model_ import Model
-from swagger_server import util
+from .base_model_ import Model
+from . import util
 
 
 class Error(Model):
@@ -15,7 +15,7 @@ class Error(Model):
     Do not edit the class manually.
     """
 
-    def __init__(self, code: int=None, description: str=None):  # noqa: E501
+    def __init__(self, code: int = None, description: str = None):  # noqa: E501
         """Error - a model defined in Swagger
 
         :param code: The code of this Error.  # noqa: E501
