@@ -1,7 +1,7 @@
 import sanic
 from src.api.controllers.task_controller import TaskController
 from .utils import *
-from .models import TaskUpdate, Task, TaskDescription
+from .models import Task, TaskDescription
 
 
 def setup_task_endpoints(task_controller: TaskController):

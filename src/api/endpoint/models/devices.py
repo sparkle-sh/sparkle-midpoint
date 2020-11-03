@@ -7,6 +7,7 @@ from typing import List, Dict  # noqa: F401
 
 from .base_model_ import Model
 from . import util
+from .device import Device
 
 
 class Devices(Model):
