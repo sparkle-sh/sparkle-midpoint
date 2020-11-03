@@ -5,8 +5,8 @@ from datetime import date, datetime  # noqa: F401
 
 from typing import List, Dict  # noqa: F401
 
-from .base_model_ import Model
-from . import util
+from swagger_server.models.base_model_ import Model
+from swagger_server import util
 
 
 class TaskId(Model):
@@ -15,7 +15,7 @@ class TaskId(Model):
     Do not edit the class manually.
     """
 
-    def __init__(self, task_id: str = None):  # noqa: E501
+    def __init__(self, task_id: str=None):  # noqa: E501
         """TaskId - a model defined in Swagger
 
         :param task_id: The task_id of this TaskId.  # noqa: E501

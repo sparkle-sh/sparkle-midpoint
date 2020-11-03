@@ -5,9 +5,8 @@ from datetime import date, datetime  # noqa: F401
 
 from typing import List, Dict  # noqa: F401
 
-from .base_model_ import Model
-from .agent import Agent
-from . import util
+from swagger_server.models.base_model_ import Model
+from swagger_server import util
 
 
 class DeviceValueQuery(Model):
@@ -16,7 +15,7 @@ class DeviceValueQuery(Model):
     Do not edit the class manually.
     """
 
-    def __init__(self, device_id: int = None, agent: Agent = None, labels: List[str] = None):  # noqa: E501
+    def __init__(self, device_id: int=None, agent: Agent=None, labels: List[str]=None):  # noqa: E501
         """DeviceValueQuery - a model defined in Swagger
 
         :param device_id: The device_id of this DeviceValueQuery.  # noqa: E501
