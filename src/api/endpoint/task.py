@@ -1,7 +1,7 @@
 import sanic
 from src.api.controllers.task_controller import TaskController
 from .utils import *
-from .models import TaskId, TaskUpdate, Task, TaskDescription
+from .models import TaskUpdate, Task, TaskDescription
 
 
 def setup_task_endpoints(task_controller: TaskController):
@@ -18,21 +18,21 @@ def setup_task_endpoints(task_controller: TaskController):
     @bp.get("/")
     @handle_api_exceptions
     async def task_get(req):
-        task_id = TaskId.from_dict(
-            validate_payload(['task_id'], req.json)).task_id
+        task_id = validate_payload(['Agent-ID'], req.headers).get("Agent-ID")
         res = await task_controller.get_task(task_id)
         return response(res, 200)
 
     @bp.put("/")
     @handle_api_exceptions
     async def task_update(req):
-        pass
+        task_id = validate_payload(['Agent-ID'], req.headers).get("Agent-ID")
+        task_description = TaskDescription.from_dict(
+            validate_payload(['type', 'action'], req.json))
 
     @bp.delete("/")
     @handle_api_exceptions
     async def task_delete(req):
-        task_id = TaskId.from_dict(
-            validate_payload(['task_id'], req.json)).task_id
+        task_id = validate_payload(['Agent-ID'], req.headers).get("Agent-ID")
         await task_controller.delete_task(task_id)
         return empty_response(200)
 
