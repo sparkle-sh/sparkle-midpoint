@@ -5,10 +5,9 @@ from datetime import date, datetime  # noqa: F401
 
 from typing import List, Dict  # noqa: F401
 
-from .agent import Agent
-from .device_state import DeviceState
 from .base_model_ import Model
 from . import util
+from .device_state import DeviceState
 
 
 class SwitchDeviceStateQuery(Model):
@@ -17,30 +16,20 @@ class SwitchDeviceStateQuery(Model):
     Do not edit the class manually.
     """
 
-    def __init__(self, device_id: int=None, agent: Agent=None, state: DeviceState=None):  # noqa: E501
+    def __init__(self, state: DeviceState = None):  # noqa: E501
         """SwitchDeviceStateQuery - a model defined in Swagger
 
-        :param device_id: The device_id of this SwitchDeviceStateQuery.  # noqa: E501
-        :type device_id: int
-        :param agent: The agent of this SwitchDeviceStateQuery.  # noqa: E501
-        :type agent: Agent
         :param state: The state of this SwitchDeviceStateQuery.  # noqa: E501
         :type state: DeviceState
         """
         self.swagger_types = {
-            'device_id': int,
-            'agent': Agent,
             'state': DeviceState
         }
 
         self.attribute_map = {
-            'device_id': 'device_id',
-            'agent': 'agent',
             'state': 'state'
         }
 
-        self._device_id = device_id
-        self._agent = agent
         self._state = state
 
     @classmethod
@@ -53,48 +42,6 @@ class SwitchDeviceStateQuery(Model):
         :rtype: SwitchDeviceStateQuery
         """
         return util.deserialize_model(dikt, cls)
-
-    @property
-    def device_id(self) -> int:
-        """Gets the device_id of this SwitchDeviceStateQuery.
-
-
-        :return: The device_id of this SwitchDeviceStateQuery.
-        :rtype: int
-        """
-        return self._device_id
-
-    @device_id.setter
-    def device_id(self, device_id: int):
-        """Sets the device_id of this SwitchDeviceStateQuery.
-
-
-        :param device_id: The device_id of this SwitchDeviceStateQuery.
-        :type device_id: int
-        """
-
-        self._device_id = device_id
-
-    @property
-    def agent(self) -> Agent:
-        """Gets the agent of this SwitchDeviceStateQuery.
-
-
-        :return: The agent of this SwitchDeviceStateQuery.
-        :rtype: Agent
-        """
-        return self._agent
-
-    @agent.setter
-    def agent(self, agent: Agent):
-        """Sets the agent of this SwitchDeviceStateQuery.
-
-
-        :param agent: The agent of this SwitchDeviceStateQuery.
-        :type agent: Agent
-        """
-
-        self._agent = agent
 
     @property
     def state(self) -> DeviceState:

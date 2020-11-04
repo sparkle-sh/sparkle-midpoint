@@ -15,7 +15,7 @@ class Device(Model):
     Do not edit the class manually.
     """
 
-    def __init__(self, id: int=None, type: int=None, name: str=None, description: str=None):  # noqa: E501
+    def __init__(self, id: int = None, type: int = None, name: str = None, description: str = None):  # noqa: E501
         """Device - a model defined in Swagger
 
         :param id: The id of this Device.  # noqa: E501

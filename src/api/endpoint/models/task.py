@@ -5,9 +5,9 @@ from datetime import date, datetime  # noqa: F401
 
 from typing import List, Dict  # noqa: F401
 
-from .task_description import TaskDescription
 from .base_model_ import Model
 from . import util
+from .task_description import TaskDescription
 
 
 class Task(Model):

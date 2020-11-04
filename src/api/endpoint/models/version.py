@@ -15,7 +15,7 @@ class Version(Model):
     Do not edit the class manually.
     """
 
-    def __init__(self, major: int=None, minor: int=None, build: int=None):  # noqa: E501
+    def __init__(self, major: int = None, minor: int = None, build: int = None):  # noqa: E501
         """Version - a model defined in Swagger
 
         :param major: The major of this Version.  # noqa: E501

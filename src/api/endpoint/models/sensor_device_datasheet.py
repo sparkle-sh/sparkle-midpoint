@@ -16,7 +16,7 @@ class SensorDeviceDatasheet(Model):
     Do not edit the class manually.
     """
 
-    def __init__(self, datasheet: SensorDeviceDatasheetDatasheet=None):  # noqa: E501
+    def __init__(self, datasheet: SensorDeviceDatasheetDatasheet = None):  # noqa: E501
         """SensorDeviceDatasheet - a model defined in Swagger
 
         :param datasheet: The datasheet of this SensorDeviceDatasheet.  # noqa: E501

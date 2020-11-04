@@ -31,10 +31,12 @@ paths:
     delete:
       summary: Disconnects and removes agenti
       parameters:
-        - in: body
-          name: agent
+        - in: header
+          name: Agent-ID
+          description: ID of agent to remove
           schema:
-            $ref: "#/definitions/Agent"
+            type: string
+            required: true
       responses:
         200:
           description: Agent removed and disconnected successfully
@@ -48,10 +50,12 @@ paths:
       produces:
         - application/json
       parameters:
-        - in: body
-          name: Agent query info
+        - in: header
+          name: Agent-ID
+          description: ID of agent to use as connector client
           schema:
-            $ref: "#/definitions/AgentQuery"
+            type: string
+            required: true
       responses:
         200:
           description: Devices fetched successfully
@@ -61,16 +65,24 @@ paths:
           description: Something went wrong
           schema:
             $ref: "#/definitions/Error"
-  /device/state:
+  /device/{id}/state:
     get:
       summary: Returns device state
       produces:
         - application/json
       parameters:
-        - in: body
-          name: Device query info
+        - in: header
+          name: Agent-ID
+          description: ID of agent to use as connector client
           schema:
-            $ref: "#/definitions/DeviceQuery"
+            type: string
+            required: true
+        - in: path
+          name: id
+          description: Device id to interact with
+          schema:
+            type: integer
+            required: true
       responses:
         200:
           description: Device state fetched successfully
@@ -83,6 +95,18 @@ paths:
     put:
       summary: Switches device state
       parameters:
+        - in: header
+          name: Agent-ID
+          description: ID of agent to use as connector client
+          schema:
+            type: string
+            required: true
+        - in: path
+          name: id
+          description: Device id to interact with
+          schema:
+            type: integer
+            required: true
         - in: body
           name: Switch device query info
           schema:
@@ -94,16 +118,24 @@ paths:
           description: Something went wrong
           schema:
             $ref: "#/definitions/Error"
-  /device/datasheet:
+  /device/{id}/datasheet:
     get:
       summary: Returns device datasheet
       produces:
         - application/json
       parameters:
-        - in: body
-          name: Device query info
+        - in: header
+          name: Agent-ID
+          description: ID of agent to use as connector client
           schema:
-            $ref: "#/definitions/DeviceQuery"
+            type: string
+            required: true
+        - in: path
+          name: id
+          description: Device id to interact with
+          schema:
+            type: integer
+            required: true
       responses:
         200:
           description: Device datasheet fetched successfully
@@ -115,16 +147,30 @@ paths:
           description: Something went wrong
           schema:
             $ref: "#/definitions/Error"
-  /device/value:
+  /device/{id}/value/{label}:
     get:
       summary: Return value of sensor device
       produces:
         - application/json
       parameters:
-        - in: body
-          name: Device value query info
+        - in: header
+          name: Agent-ID
+          description: ID of agent to use as connector client
           schema:
-            $ref: "#/definitions/DeviceValueQuery"
+            type: string
+            required: true
+        - in: path
+          name: id
+          description: Device id to interact with
+          schema:
+            type: integer
+            required: true
+        - in: path
+          name: label
+          description: Label of value to fetch
+          schema:
+            type: string
+            required: true
       responses:
         200:
           description: Device value fetched successfully
@@ -140,10 +186,12 @@ paths:
       produces:
         - application/json
       parameters:
-        - in: body
-          name: Task id
+        - in: header
+          name: Task-ID
+          description: ID of task to fetch informations
           schema:
-            $ref: "#/definitions/TaskId"
+            type: string
+            required: true
       responses:
         200:
           description: Task found and fetched successfully
@@ -176,10 +224,12 @@ paths:
       produces:
         - application/json
       parameters:
-        - in: body
-          name: Task id
+        - in: header
+          name: Task-ID
+          description: ID of task to remove
           schema:
-            $ref: "#/definitions/TaskId"
+            type: string
+            required: true
       responses:
         200:
           description: Task removed successfully
@@ -192,10 +242,16 @@ paths:
       produces:
         - application/json
       parameters:
-        - in: body
-          name: Updated task
+        - in: header
+          name: Task-ID
+          description: ID of task to update
           schema:
-            $ref: "#/definitions/TaskUpdate"
+            type: string
+            required: true
+        - in: body
+          name: Updated task description
+          schema:
+            $ref: "#/definitions/TaskDescription"
       responses:
         200:
           description: Task updated successfully
@@ -204,13 +260,6 @@ paths:
           schema:
             $ref: "#/definitions/Error"
 definitions:
-  TaskUpdate:
-    type: object
-    properties:
-      task_id:
-        type: string
-      description:
-        $ref: "#/definitions/TaskDescription"
   Task:
     type: object
     properties:
@@ -242,50 +291,23 @@ definitions:
     properties:
       task_id:
         type: string
-  AgentQuery:
-    type: object
-    properties:
-      agent:
-        $ref: "#/definitions/Agent"
-  DeviceValueQuery:
-    type: object
-    properties:
-      device_id:
-        type: integer
-      agent:
-        $ref: "#/definitions/Agent"
-      labels:
-        type: array
-        items:
-          type: string
   DeviceValue:
     type: object
     properties:
-      values:
-        type: object
+      value:
+        type: integer
   SwitchDeviceStateQuery:
     type: object
     properties:
-      device_id:
-        type: integer
-      agent:
-        $ref: "#/definitions/Agent"
       state:
         $ref: "#/definitions/DeviceState"
-  DeviceQuery:
-    type: object
-    properties:
-      device_id:
-        type: integer
-      agent:
-        $ref: "#/definitions/Agent"
   SwitchableDeviceDatasheet:
     type: object
     properties:
       datasheet:
         type: object
         properties:
-          values:
+          states:
             type: array
             items:
               type: integer

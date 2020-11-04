@@ -16,8 +16,8 @@ def setup_agent_endpoints(agent_controller: AgentController):
     @bp.delete("/")
     @handle_api_exceptions
     async def agent_delete(req):
-        agent = Agent.from_dict(validate_payload(['id'], req.json))
-        await agent_controller.disconnect(agent)
+        agent_id = validate_payload(['Agent-ID'], req.headers).get('Agent-ID')
+        await agent_controller.disconnect(agent_id)
         return empty_response(200)
-            
+
     return bp

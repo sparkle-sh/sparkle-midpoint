@@ -17,4 +17,4 @@ class GetDeviceStateResponse(Response):
         self.state = content.get("state")
 
     def get_state(self) -> int:
-        return self.state.get("state_value")
+        return self.state

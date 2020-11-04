@@ -15,7 +15,7 @@ class DeviceState(Model):
     Do not edit the class manually.
     """
 
-    def __init__(self, state_value: int=None):  # noqa: E501
+    def __init__(self, state_value: int = None):  # noqa: E501
         """DeviceState - a model defined in Swagger
 
         :param state_value: The state_value of this DeviceState.  # noqa: E501

@@ -25,4 +25,3 @@ def get_logger(name: str) -> logging.Logger:
     root.addHandler(file_handler)
     root.addHandler(console)
     return root
-

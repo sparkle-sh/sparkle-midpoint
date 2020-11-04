@@ -18,7 +18,7 @@ class GetDeviceDatasheetResponse(Response):
         self.datasheet = content.get("datasheet")
         if 'labels' in self.datasheet:
             self.device_type = DeviceType.SENSOR
-        elif 'values' in self.datasheet:
+        elif 'states' in self.datasheet:
             self.device_type = DeviceType.SWITCHABLE
         else:
             raise ConnectorModelError(
@@ -31,4 +31,4 @@ class GetDeviceDatasheetResponse(Response):
         if self.device_type == DeviceType.SENSOR:
             return self.datasheet.get("labels")
         else:
-            return self.datasheet.get("values")
+            return self.datasheet.get("states")

@@ -20,7 +20,8 @@ class BasicTests(MidpointTestBase):
         self.assertIn('build', version)
 
     def test_invalid_route(self):
-        code, res = self.wrapped_request(requests.get, f'{self.url}/ala_ma_kota')
+        code, res = self.wrapped_request(
+            requests.get, f'{self.url}/ala_ma_kota')
         self.assertEqual(code, 404)
         self.assertEqual(res.get("code"), 400)
 
@@ -34,10 +35,11 @@ class BasicTests(MidpointTestBase):
         self.assertEqual(code, 400)
         self.assertIn('connector is down', res['description'])
 
-    def test_disconnect_without_body(self):
-        code, res = self.wrapped_request(requests.delete, f'{self.url}/agent')
+    def test_disconnect_without_headers(self):
+        code, res = self.wrapped_request(
+            requests.delete, f'{self.url}/agent')
         self.assertEqual(code, 400)
-        self.assertIn('empty', res['description'])
+        self.assertIn('missing', res['description'])
 
     def test_disconnect_with_invalid_key(self):
         payload = {'hello': 'world'}
@@ -47,8 +49,8 @@ class BasicTests(MidpointTestBase):
         self.assertIn('corrupted', res['description'])
 
     def test_disconnect_with_invalid_agent_id(self):
-        payload = {'id': 'world'}
+        headers = {'Agent-ID': 'world'}
         code, res = self.wrapped_request(
-            requests.delete, f'{self.url}/agent', json=payload)
+            requests.delete, f'{self.url}/agent', headers=headers)
         self.assertEqual(code, 400)
         self.assertIn('not exist', res['description'])

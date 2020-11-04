@@ -15,21 +15,21 @@ class DeviceValue(Model):
     Do not edit the class manually.
     """
 
-    def __init__(self, values: object = None):  # noqa: E501
+    def __init__(self, value: int = None):  # noqa: E501
         """DeviceValue - a model defined in Swagger
 
-        :param values: The values of this DeviceValue.  # noqa: E501
-        :type values: object
+        :param value: The value of this DeviceValue.  # noqa: E501
+        :type value: int
         """
         self.swagger_types = {
-            'values': object
+            'value': int
         }
 
         self.attribute_map = {
-            'values': 'values'
+            'value': 'value'
         }
 
-        self._values = values
+        self._value = value
 
     @classmethod
     def from_dict(cls, dikt) -> 'DeviceValue':
@@ -43,22 +43,22 @@ class DeviceValue(Model):
         return util.deserialize_model(dikt, cls)
 
     @property
-    def values(self) -> object:
-        """Gets the values of this DeviceValue.
+    def value(self) -> int:
+        """Gets the value of this DeviceValue.
 
 
-        :return: The values of this DeviceValue.
-        :rtype: object
+        :return: The value of this DeviceValue.
+        :rtype: int
         """
-        return self._values
+        return self._value
 
-    @values.setter
-    def values(self, values: object):
-        """Sets the values of this DeviceValue.
+    @value.setter
+    def value(self, value: int):
+        """Sets the value of this DeviceValue.
 
 
-        :param values: The values of this DeviceValue.
-        :type values: object
+        :param value: The value of this DeviceValue.
+        :type value: int
         """
 
-        self._values = values
+        self._value = value

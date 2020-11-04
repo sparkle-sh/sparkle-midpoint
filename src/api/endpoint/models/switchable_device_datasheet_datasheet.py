@@ -15,21 +15,21 @@ class SwitchableDeviceDatasheetDatasheet(Model):
     Do not edit the class manually.
     """
 
-    def __init__(self, values: List[int]=None):  # noqa: E501
+    def __init__(self, states: List[int] = None):  # noqa: E501
         """SwitchableDeviceDatasheetDatasheet - a model defined in Swagger
 
-        :param values: The values of this SwitchableDeviceDatasheetDatasheet.  # noqa: E501
-        :type values: List[int]
+        :param states: The states of this SwitchableDeviceDatasheetDatasheet.  # noqa: E501
+        :type states: List[int]
         """
         self.swagger_types = {
-            'values': List[int]
+            'states': List[int]
         }
 
         self.attribute_map = {
-            'values': 'values'
+            'states': 'states'
         }
 
-        self._values = values
+        self._states = states
 
     @classmethod
     def from_dict(cls, dikt) -> 'SwitchableDeviceDatasheetDatasheet':
@@ -43,22 +43,22 @@ class SwitchableDeviceDatasheetDatasheet(Model):
         return util.deserialize_model(dikt, cls)
 
     @property
-    def values(self) -> List[int]:
-        """Gets the values of this SwitchableDeviceDatasheetDatasheet.
+    def states(self) -> List[int]:
+        """Gets the states of this SwitchableDeviceDatasheetDatasheet.
 
 
-        :return: The values of this SwitchableDeviceDatasheetDatasheet.
+        :return: The states of this SwitchableDeviceDatasheetDatasheet.
         :rtype: List[int]
         """
-        return self._values
+        return self._states
 
-    @values.setter
-    def values(self, values: List[int]):
-        """Sets the values of this SwitchableDeviceDatasheetDatasheet.
+    @states.setter
+    def states(self, states: List[int]):
+        """Sets the states of this SwitchableDeviceDatasheetDatasheet.
 
 
-        :param values: The values of this SwitchableDeviceDatasheetDatasheet.
-        :type values: List[int]
+        :param states: The states of this SwitchableDeviceDatasheetDatasheet.
+        :type states: List[int]
         """
 
-        self._values = values
+        self._states = states

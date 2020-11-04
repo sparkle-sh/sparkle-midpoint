@@ -15,7 +15,7 @@ class Error(Model):
     Do not edit the class manually.
     """
 
-    def __init__(self, code: int=None, description: str=None):  # noqa: E501
+    def __init__(self, code: int = None, description: str = None):  # noqa: E501
         """Error - a model defined in Swagger
 
         :param code: The code of this Error.  # noqa: E501

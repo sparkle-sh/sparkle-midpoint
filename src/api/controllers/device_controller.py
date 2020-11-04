@@ -39,9 +39,9 @@ class DeviceController(object):
         else:
             return SwitchableDeviceDatasheet(SwitchableDeviceDatasheetDatasheet(res.get_datasheet()))
 
-    async def get_device_value(self, connector_client: ConnectorClient, device_id: int, labels: List[str]):
-        res = await connector_client.send_request(GetDeviceValueRequest(device_id, labels))
+    async def get_device_value(self, connector_client: ConnectorClient, device_id: int, label: str):
+        res = await connector_client.send_request(GetDeviceValueRequest(device_id, [label]))
         if not isinstance(res, GetDeviceValueResponse):
             raise ApiError(ErrorCode.CONNECTOR_RESPONSE_ERROR,
                            "Received unexpected response from connector")
-        return DeviceValue(res.get_values())
+        return DeviceValue(res.get_values().get(label))
