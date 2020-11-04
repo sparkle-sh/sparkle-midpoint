@@ -23,23 +23,22 @@ class FakeConnectorBasicTests(FakeConnectorTestsBase):
 
         url = "{}/agent".format(MIDPOINT_API_BASE)
         code, payload = self.wrapped_request(requests.post, url)
-       
-        self.assertEqual(code, 201)
 
+        self.assertEqual(code, 201)
 
     def test_disconnect_agent_with_invalid_agent_id(self):
         url = "{}/agent".format(MIDPOINT_API_BASE)
         code, payload = self.wrapped_request(
-            requests.delete, url, json={"agent_id": 1111})
+            requests.delete, url, headers={"Agent-ID": "1111"})
         self.assertEqual(code, 400)
 
     def test_disconnect_agent_without_agent_id(self):
         url = "{}/agent".format(MIDPOINT_API_BASE)
         code, payload = self.wrapped_request(
-            requests.delete, url, json={})
+            requests.delete, url, headers={})
         self.assertEqual(code, 400)
 
-    def test_disconnect_agent_with_empty_body(self):
+    def test_disconnect_agent_with_empty_headers(self):
         url = "{}/agent".format(MIDPOINT_API_BASE)
         code, payload = self.wrapped_request(
             requests.delete, url)
@@ -66,5 +65,5 @@ class FakeConnectorBasicTests(FakeConnectorTestsBase):
 
         url = "{}/agent".format(MIDPOINT_API_BASE)
         code, payload = self.wrapped_request(
-            requests.delete, url, json={"id": payload.get("id")})
+            requests.delete, url, headers={"Agent-ID": payload.get("id")})
         self.assertEqual(code, 200)
