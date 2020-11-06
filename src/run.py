@@ -5,6 +5,7 @@ import asyncio
 import aiomisc
 from core.log import get_logger
 from core import config
+from core.db import ConnectionPool
 from core.event.event_manager import EventManager
 from api.service import ApiService
 from scheduler.service import SchedulerService
@@ -30,6 +31,9 @@ async def pre_init(entrypoint, services):
         asyncio.get_event_loop().add_signal_handler(
             sig, lambda: asyncio.create_task(shutdown())
         )
+
+    log.info("Connecting connection pool")
+    await ConnectionPool.init(config)
 
 log.info("Loading config")
 config = config.Config("./cfg/config.json")

@@ -10,6 +10,8 @@ from core.error import SparkleError, SchedulerError
 from src.core.event.event import EventType
 from .task.task import Task, TaskState, TaskType, PeriodicTask, DeferredTask
 from .task.actions import *
+from .db_proxy import DatabaseProxy
+
 
 log = get_logger("scheduler.service")
 
@@ -27,6 +29,7 @@ class SchedulerService(aiomisc.Service):
         self.cfg = cfg
         self.update_job = aiomisc.PeriodicCallback(self.update)
         self.tasks: Dict[str, Task] = {}
+        self.db_proxy = DatabaseProxy()
 
     async def start(self):
         log.info("Starting scheduler service")
@@ -58,6 +61,7 @@ class SchedulerService(aiomisc.Service):
                 break
             log.debug("Received event: %s", event)
             handler = task_to_handler.get(event.event_type)
+
             if handler is None:
                 log.warning("Cannot find handler for received request")
                 res = make_err_response(
@@ -68,6 +72,7 @@ class SchedulerService(aiomisc.Service):
                 except SparkleError as e:
                     log.warning("Error handling request: %s", str(e))
                     res = make_err_response(e.code, e.description)
+
             log.info("Sending %s to %s", res, event.sender)
             self.event_emitter.send_result(event.sender, res, event.id)
 
@@ -82,13 +87,18 @@ class SchedulerService(aiomisc.Service):
         task_type = payload.get("type")
         action = string_to_action(
             payload['action']['name'], payload['action']['device_id'])
+
         if task_type == 'deferred':
             task = await self.create_deferred_task(payload, action)
         else:
             task = await self.create_periodic_task(payload, action)
+
         await task.init(self.cfg.connector.host, self.cfg.connector.port)
         task_id = str(uuid.uuid4())
         self.tasks.update({task_id: task})
+
+        await self.db_proxy.insert_task(task, task_id)
+
         return {
             'task_id': task_id
         }
@@ -104,10 +114,13 @@ class SchedulerService(aiomisc.Service):
     async def get_task(self, payload) -> Dict:
         log.debug("Fetching task info: %s", payload)
         task_id = payload.get("task_id")
+
         if task_id is None:
             raise SchedulerError(777, 'Task id is missing')
+
         if task_id not in self.tasks:
             raise SchedulerError(777, f'Could not find task with id {task_id}')
+
         task = self.tasks.get(task_id)
         return task.serialize()
 
@@ -118,11 +131,14 @@ class SchedulerService(aiomisc.Service):
     async def delete_task(self, payload) -> Dict:
         log.debug("Deleting task: %s", payload)
         task_id = payload.get("task_id")
+
         if task_id is None:
             raise SchedulerError(777, 'Task id is missing')
+
         if task_id not in self.tasks:
             log.warning('Task with id %s not found in %s', task_id, self.tasks)
             raise SchedulerError(777, f'Could not find task with id {task_id}')
+
         task = self.tasks.pop(task_id)
         await task.deinit()
         return {}

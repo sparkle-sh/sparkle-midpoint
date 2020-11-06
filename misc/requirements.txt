@@ -4,3 +4,4 @@ uvloop==0.14.0
 coverage==5.3
 monotonic==1.5
 PyYAML==5.3.1
+asyncpg==0.21.0

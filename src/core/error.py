@@ -10,7 +10,8 @@ class ErrorCode(enum.IntEnum):
     INVALID_HANDSHAKE = 200,
     CONNECTOR_ERROR = 201,
     CONNECTOR_RESPONSE_ERROR = 202,
-    EVENT_ERROR = 500
+    EVENT_ERROR = 500,
+    DATABASE_ERROR = 700,
 
 
 class SparkleFatalError(Exception):
@@ -27,6 +28,11 @@ class SparkleFatalError(Exception):
 class SparkleError(SparkleFatalError):
     def __init__(self, code: ErrorCode, description, name="SparkleError"):
         super().__init__(code, description, name)
+
+
+class DatabaseError(SparkleError):
+    def __init__(self, msg):
+        super().__init__(ErrorCode.DATABASE_ERROR, msg, name="DatabaseError")
 
 
 class ApiError(SparkleError):
