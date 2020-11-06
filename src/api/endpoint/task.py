@@ -25,7 +25,7 @@ def setup_task_endpoints(task_controller: TaskController):
     @bp.put("/")
     @handle_api_exceptions
     async def task_update(req):
-        task_id = validate_payload(['Task-ID'], req.headers).get("Agent-ID")
+        task_id = validate_payload(['Task-ID'], req.headers).get("Task-ID")
         task_description = TaskDescription.from_dict(
             validate_payload(['type', 'action'], req.json))
 
