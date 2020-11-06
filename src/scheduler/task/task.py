@@ -4,6 +4,10 @@ import monotonic
 from typing import Callable, Dict
 from transmission.connector_client import ConnectorClient
 from .actions import *
+from core.log import get_logger
+from core.error import *
+
+log = get_logger("scheduler.task.task")
 
 
 class TaskType(enum.IntEnum):
@@ -34,7 +38,7 @@ class Task(object):
     async def update(self):
         raise NotImplementedError
 
-    async def serialize(self) -> Dict:
+    def serialize(self) -> Dict:
         raise NotImplementedError
 
 
@@ -44,13 +48,25 @@ class PeriodicTask(Task):
         self.interval = interval
 
     async def update(self):
-        succeed = await self.action.execute(self.connector_client)
-        print("xd1")
-        if not succeed:
+        try:
+            succeed = await self.action.execute(self.connector_client)
+            if not succeed:
+                self.state = TaskState.Failed
+                return
+            self.schedule = monotonic.monotonic() + self.interval
+        except SparkleError as e:
+            log.error("Task %s failed %s", self, e)
             self.state = TaskState.Failed
-            print("Xd2")
-            return
-        self.schedule = monotonic.monotonic() + self.interval
+
+    def serialize(self) -> Dict:
+        return {
+            'description': {
+                "type": "periodic",
+                "action": self.action.serialize(),
+                "interval": self.interval
+            },
+            "status": self.state.name
+        }
 
 
 class DeferredTask(Task):
@@ -59,8 +75,22 @@ class DeferredTask(Task):
         self.delay = delay
 
     async def update(self):
-        succeed = await self.action.execute(self.connector_client)
-        if not succeed:
+        try:
+            succeed = await self.action.execute(self.connector_client)
+            if not succeed:
+                self.state = TaskState.Failed
+                return
+            self.state = TaskState.Done
+        except SparkleError as e:
+            log.error("Task %s failed %s", self, e)
             self.state = TaskState.Failed
-            return
-        self.state = TaskState.Done
+
+    def serialize(self) -> Dict:
+        return {
+            'description': {
+                "type": "deferred",
+                "action": self.action.serialize(),
+                "delay": self.delay
+            },
+            "status": self.state.name
+        }
