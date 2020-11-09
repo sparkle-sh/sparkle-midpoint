@@ -25,6 +25,10 @@ jobs:
         run: docker build --tag sparkle-midpoint --file ./misc/Dockerfile .
       - name: Create docker network
         run: docker network create sparkle-net
+      - name: Fetch sparkle-db scheme
+        run: |
+          git clone --single-branch --branch dev https://github.com/sparkle-sh/sparkle-db 
+          cp sparkle-db/misc/*.sql ./misc
       - name: Run integration tests
         run: |
           mkdir ./sparkle-midpoint-cov
@@ -67,3 +71,4 @@ jobs:
           docker login --username ${{ secrets.DOCKER_AUTH_LOGIN }} --password ${{ secrets.DOCKER_AUTH_TOKEN }}
           docker tag sparkle-midpoint ${{ secrets.DOCKER_AUTH_LOGIN }}/sparkle-midpoint 
           docker push ${{ secrets.DOCKER_AUTH_LOGIN }}/sparkle-midpoint
+
