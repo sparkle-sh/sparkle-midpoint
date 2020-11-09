@@ -12,6 +12,10 @@ from scheduler.service import SchedulerService
 
 log = get_logger("main")
 
+log.info("Loading config")
+config = config.Config("./cfg/config.json")
+log.info("Config loaded")
+
 
 @aiomisc.receiver(aiomisc.entrypoint.PRE_START)
 async def pre_init(entrypoint, services):
@@ -31,13 +35,6 @@ async def pre_init(entrypoint, services):
         asyncio.get_event_loop().add_signal_handler(
             sig, lambda: asyncio.create_task(shutdown())
         )
-
-    log.info("Connecting connection pool")
-    await ConnectionPool.init(config)
-
-log.info("Loading config")
-config = config.Config("./cfg/config.json")
-log.info("Config loaded")
 
 event_manager = EventManager()
 

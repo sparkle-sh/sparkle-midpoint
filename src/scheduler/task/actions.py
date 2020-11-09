@@ -24,6 +24,10 @@ class SwitchDeviceStateAction(TaskAction):
     async def execute(self, connector_client: ConnectorClient):
         req = GetDeviceStateRequest(device_id=self.device_id)
         res = await connector_client.send_request(req)
+
+        if not isinstance(res, GetDeviceStateResponse):
+            return False
+
         new_state = self.state_changer(res.get_state())
 
         req = SwitchDeviceStateRequest(self.device_id, new_state)

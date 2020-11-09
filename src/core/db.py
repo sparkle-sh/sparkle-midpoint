@@ -18,6 +18,7 @@ class ConnectionPool(object):
                 ConnectionPool.pool = await asyncpg.create_pool(
                     dsn=dsn
                 )
+                print(ConnectionPool.pool)
                 log.info("Database connection established succesfully")
                 return
             # tODO: catch more precise exception

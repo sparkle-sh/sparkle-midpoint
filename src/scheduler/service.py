@@ -6,6 +6,7 @@ from typing import Dict
 import uuid
 from typing import Dict
 from core.log import get_logger
+from core.db import ConnectionPool
 from core.error import SparkleError, SchedulerError
 from src.core.event.event import EventType
 from .task.task import Task, TaskState, TaskType, PeriodicTask, DeferredTask
@@ -29,10 +30,13 @@ class SchedulerService(aiomisc.Service):
         self.cfg = cfg
         self.update_job = aiomisc.PeriodicCallback(self.update)
         self.tasks: Dict[str, Task] = {}
-        self.db_proxy = DatabaseProxy()
+        self.db_proxy = DatabaseProxy(self.cfg)
 
     async def start(self):
         log.info("Starting scheduler service")
+
+        await self.db_proxy.init()
+
         await self.read_tasks_from_db()
         self.update_job.start(interval=1)
 
@@ -81,6 +85,7 @@ class SchedulerService(aiomisc.Service):
         for task_id, task in self.tasks.items():
             if task.state is TaskState.Active and time >= task.schedule:
                 await task.update()
+                await self.db_proxy.update_task_state(task.get_type(), task_id, task.state.name)
 
     async def insert_task(self, payload) -> Dict:
         log.debug("Inserting new task: %s", payload)
@@ -98,6 +103,7 @@ class SchedulerService(aiomisc.Service):
         self.tasks.update({task_id: task})
 
         await self.db_proxy.insert_task(task, task_id)
+        log.info("Task %s added", task_id)
 
         return {
             'task_id': task_id
@@ -140,5 +146,9 @@ class SchedulerService(aiomisc.Service):
             raise SchedulerError(777, f'Could not find task with id {task_id}')
 
         task = self.tasks.pop(task_id)
+
+        await self.db_proxy.delete_task(task.get_type(), task_id)
         await task.deinit()
+
+        log.info("Task %s removed", task_id)
         return {}

@@ -5,7 +5,7 @@ from typing import Callable, Dict
 from transmission.connector_client import ConnectorClient
 from .actions import *
 from core.log import get_logger
-from core.error import *
+from src.core.error import *
 
 log = get_logger("scheduler.task.task")
 
