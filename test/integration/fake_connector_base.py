@@ -5,10 +5,10 @@ from sparkle_test_base.fakes import FakeConnector
 
 class FakeConnectorTestsBase(MidpointTestBase):
     def setUp(self):
-        super().setUp() 
+        super().setUp()
         self.fake_connector = FakeConnector()
         self.fake_connector.start()
 
     def tearDown(self):
-        self.fake_connector.stop()
         super().tearDown()
+        self.fake_connector.stop()
