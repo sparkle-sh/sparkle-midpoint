@@ -5,7 +5,7 @@ from typing import Callable, Dict
 from transmission.connector_client import ConnectorClient
 from .actions import *
 from core.log import get_logger
-from core.error import *
+from src.core.error import *
 
 log = get_logger("scheduler.task.task")
 
@@ -32,6 +32,9 @@ class Task(object):
         await self.connector_client.connect()
         await self.connector_client.initialize_session()
 
+    def get_type(self) -> TaskType:
+        raise NotImplementedError
+
     async def deinit(self):
         await self.connector_client.disconnect()
 
@@ -46,6 +49,9 @@ class PeriodicTask(Task):
     def __init__(self, action: TaskAction, interval: int):
         super().__init__(action, schedule=monotonic.monotonic() + interval)
         self.interval = interval
+
+    def get_type(self) -> TaskType:
+        return TaskType.Periodic
 
     async def update(self):
         try:
@@ -73,6 +79,9 @@ class DeferredTask(Task):
     def __init__(self, action: TaskAction, delay: int):
         super().__init__(action, schedule=monotonic.monotonic() + delay)
         self.delay = delay
+
+    def get_type(self) -> TaskType:
+        return TaskType.Deferred
 
     async def update(self):
         try:
